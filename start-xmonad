@@ -1,0 +1,4 @@
+#!/bin/sh
+
+~/.config/xmonad/xmonad-session-rc &
+exec xmonad "$@"
