@@ -94,6 +94,8 @@ myUrgentWSLeft   = "{"         -- wrap urgent workspace with these
 myUrgentWSRight  = "}"
 myLauncher       = "$(yeganesh -x -- -fn 'monospace-8' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
 myFileLauncher   = "menu-d"
+myFileManager    = "pcmanfm-qt"
+myFileSearch     = "fsearch"
 
 myStartupHook    = do
       setWMName "LG3D"
@@ -327,6 +329,14 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
     -- Spawn a file launcher using menu-d [xdg-open, fasd and dmenu]
     , ((myModMask .|. shiftMask, xK_p),
       spawn myFileLauncher)
+
+    -- Launch Graphical File Explorer
+    , ((myModMask, xK_f),
+      spawn myFileManager)
+
+    -- Launch Graphical File Search
+    , ((myModMask .|. shiftMask, xK_f),
+      spawn myFileSearch)
 
     -- Show date not very useful
     -- , ((myModMask,               xK_d     ), date)
