@@ -230,10 +230,10 @@ gimpLayout = smartBorders(avoidStruts(ThreeColMid 1 (3/100) (3/4)))
 -- layouts.
 myLayouts =
   -- onWorkspace "7:Chat" chatLayout
-  onWorkspace "9:Pix" gimpLayout
-  $ defaultLayouts
+  onWorkspace "9:Pix" gimpLayout $
+	  defaultLayouts
 
-myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
+myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList 
   [
     -- mod-button1, Set the window to floating mode and move by dragging
     ((modMask, button1),
@@ -563,7 +563,7 @@ myManagementHooks = [
   , className =? "Orage" --> doFloat
   , className =? "Gnome-calendar" --> doFloat
   , (className =? "Waterfox") --> viewShift "6:Web"
-  , (className =? "Firefox") --> doF ( W.shift "6:Web")
+  -- , (className =? "Firefox") --> doF ( W.shift "6:Web")
   , (className =? "Empathy") --> doF (W.shift "7:Chat")
   , (className =? "Pidgin") --> doF (W.shift "7:Chat")
   , (className =? "Gimp-2.8") --> doF (W.shift "9:Pix")
