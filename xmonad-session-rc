@@ -24,7 +24,8 @@ xrdb -merge .Xresources  &
 # transparency support.
 
 #   xcompmgr -n &
-compton &
+# compton &
+compton --backend glx --paint-on-overlay --vsync opengl-swc &
 
 #
 # SCREEN CONFIGURATION
@@ -60,7 +61,8 @@ xrandr | grep 'DP-1 connected' | ifne xrandr --output DP-1 --auto --left-of LVDS
 # To set your backgrounds, run nitrogren /path/to/images
  
 /usr/lib/x86_64-linux-gnu/indicator-session/indicatoession-service &
-/usr/lib/gnome-settings-daemon/gsd-xsettings &
+# /usr/lib/gnome-settings-daemon/gsd-xsettings &
+/usr/libexec/gsd-xsettings &
 #   nitrogen --restore &
 nm-applet &
 classicmenu-indicator &

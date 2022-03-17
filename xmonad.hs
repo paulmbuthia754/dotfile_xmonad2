@@ -47,8 +47,12 @@ import           XMonad.Layout.Tabbed
 import           XMonad.Layout.ThreeColumns
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
+import           XMonad.Util.NamedScratchpad
+import           XMonad.Util.Loggers.NamedScratchpad
+import           XMonad.Util.WorkspaceCompare
 -- import XMonad.Hooks.ICCCMFocus  -- deprecated
 import qualified Data.Map                          as M
+import qualified Data.List                         as L
 import           Data.Ratio                        ((%))
 import           Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet                   as W
@@ -102,13 +106,11 @@ myStartupHook    = do
       windows $ W.greedyView startupWorkspace
       -- Bars.dynStatusBarStartup barCreator barDestoyer
       spawn "~/.xmonad/startup-hook"
+      nspTrackStartup scratchpads
 
-
--- myEventHook = E.fullscreenEventHook <+> fullscreenEventHook
-
-myManageHook = manageHook def
-      <+> composeAll myManagementHooks
-      <+> manageDocks
+myManageHook = manageDocks
+         <+> composeAll myManagementHooks
+         <+> namedScratchpadManageHook scratchpads
 
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
@@ -141,6 +143,17 @@ myWorkspaces =
   ]
 
 startupWorkspace = "5:Dev"  -- which workspace do you want to be on after launch?
+
+-- NamedScratchpad Utilities
+scratchpads :: NamedScratchpads
+scratchpads = [
+    -- run htop in terminal
+    NS "htop" (myTerminal <> " -e htop -T htop") (title =? "htop") defaultFloating 
+    , NS "spotify" "spotify" (title =? "Spotify") defaultFloating 
+    , NS "qalculate" "qalculate" (title =? "Qalculate!") defaultFloating
+    , NS "gnote" "gnote" (title =? "Gnote") defaultFloating
+    , NS "notes" "gvim --role notes ~/notes/notes.txt" (role =? "notes") nonFloating
+    ] where role = stringProperty "WM_WINDOW_ROLE"
 
 {-
   Layout configuration. In this section we identify which xmonad
@@ -230,8 +243,8 @@ gimpLayout = smartBorders(avoidStruts(ThreeColMid 1 (3/100) (3/4)))
 -- layouts.
 myLayouts =
   -- onWorkspace "7:Chat" chatLayout
-  onWorkspace "9:Pix" gimpLayout $
-	  defaultLayouts
+  -- onWorkspace "9:Pix" gimpLayout $
+  defaultLayouts
 
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList 
   [
@@ -253,7 +266,6 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
 
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
   ]
-
 
 {-
   Custom keybindings. In this section we define a list of relatively
@@ -302,8 +314,7 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
     , ((myModMask .|. shiftMask, xK_apostrophe), spawn "my-player-prev") -- go to prev player in mpris
 
     -- Start a terminal.  Terminal to start is specified by myTerminal variable.
-    , ((myModMask .|. shiftMask, xK_Return),
-     spawn $ XMonad.terminal conf)
+    , ((myModMask .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
     {-
     -- Lock the screen using command specified by myScreensaver.
     , ((myModMask .|. controlMask, xK_l),
@@ -311,99 +322,81 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
     -}
     -- Spawn the launcher using command specified by myLauncher.
     -- Use this to launch programs without a key binding.
-    , ((myModMask, xK_p),
-      spawn myLauncher)
+    , ((myModMask, xK_p), spawn myLauncher)
 
     -- Take a selective screenshot using the command specified by mySelectScreenshot.
-    , ((myModMask, xK_s),
-      spawn myScreenshot)
+    , ((myModMask, xK_s), spawn myScreenshot)
 
     -- Take a selective screenshot using the command specified by mySelectScreenshot.
-    , ((myModMask .|. shiftMask, xK_s),
-      spawn mySelectScreenshot)
+    , ((myModMask .|. shiftMask, xK_s), spawn mySelectScreenshot)
 
     -- Take a full screenshot using the command specified by myScreenshot.
-    , ((myModMask .|. controlMask .|. shiftMask, xK_p),
-      spawn myScreenshot)
+    , ((myModMask .|. controlMask .|. shiftMask, xK_p), spawn myScreenshot)
 
     -- Spawn a file launcher using menu-d [xdg-open, fasd and dmenu]
-    , ((myModMask .|. shiftMask, xK_p),
-      spawn myFileLauncher)
+    , ((myModMask .|. shiftMask, xK_p), spawn myFileLauncher)
 
     -- Launch Graphical File Explorer
-    , ((myModMask, xK_f),
-      spawn myFileManager)
+    , ((myModMask, xK_f), spawn myFileManager)
 
     -- Launch Graphical File Search
-    , ((myModMask .|. shiftMask, xK_f),
-      spawn myFileSearch)
+    , ((myModMask .|. shiftMask, xK_f), spawn myFileSearch)
 
     -- Show date not very useful
     -- , ((myModMask,               xK_d     ), date)
 
     -- View, shift to and view, and cast away to, empty Workspaces
-      , ((myModMask,                xK_n    ), viewEmptyWorkspace)
-      , ((myModMask .|. shiftMask,  xK_n    ), tagToEmptyWorkspace)
-      , ((myModMask .|. controlMask, xK_n    ), sendToEmptyWorkspace)
+    , ((myModMask,                xK_n), viewEmptyWorkspace)
+    , ((myModMask .|. shiftMask,  xK_n), tagToEmptyWorkspace)
+    , ((myModMask .|. controlMask, xK_n), sendToEmptyWorkspace)
 
     -- Rotate through terminator windows
-      , ((mySecModMask, xK_t), nextMatch Forward  (className =? "Terminator"))
-      , ((mySecModMask .|. shiftMask, xK_t), nextMatch Backward (className =? "Terminator"))
+    , ((mySecModMask, xK_t), nextMatch Forward  (className =? "Terminator"))
+    , ((mySecModMask .|. shiftMask, xK_t), nextMatch Backward (className =? "Terminator"))
 
     -- Rotate through similar windows
       -- , ((mySecModMask , xK_j), nextMatchWithThis2 Forward  className isOnAnyVisibleWS)
       -- , ((mySecModMask , xK_k), nextMatchWithThis2 Backward className isOnAnyVisibleWS)
 
-      , ((mySecModMask , xK_j), nextMatchWithThis Forward  className)
-      , ((mySecModMask , xK_k), nextMatchWithThis Backward className)
+    , ((mySecModMask , xK_j), nextMatchWithThis Forward  className)
+    , ((mySecModMask , xK_k), nextMatchWithThis Backward className)
+
+-- Scratchpad Keybindings
+    , ((mySecModMask .|. shiftMask, xK_t), namedScratchpadAction scratchpads "htop")
+    , ((mySecModMask .|. shiftMask, xK_r), namedScratchpadAction scratchpads "gnote")
+    , ((mySecModMask .|. shiftMask, xK_n), namedScratchpadAction scratchpads "notes")
+    , ((mySecModMask .|. shiftMask, xK_m), namedScratchpadAction scratchpads "spotify")
+    , ((mySecModMask .|. shiftMask, xK_d), namedScratchpadAction scratchpads "qalculate")
+
 {-
     -- Mute volume.
-    , ((0, xF86XK_AudioMute),
-      spawn "amixer -q set Master toggle")
-
+    , ((0, xF86XK_AudioMute), spawn "amixer -q set Master toggle")
     -- Decrease volume.
-    , ((0, xF86XK_AudioLowerVolume),
-      spawn "amixer -q set Master 5%-")
-
+    , ((0, xF86XK_AudioLowerVolume), spawn "amixer -q set Master 5%-")
     -- Increase volume.
-    , ((0, xF86XK_AudioRaiseVolume),
-      spawn "amixer -q set Master 5%+")
-
+    , ((0, xF86XK_AudioRaiseVolume), spawn "amixer -q set Master 5%+")
     -- Mute volume.
-    , ((myModMask .|. controlMask, xK_m),
-      spawn "amixer -q set Master toggle")
-
+    , ((myModMask .|. controlMask, xK_m), spawn "amixer -q set Master toggle")
     -- Decrease volume.
-    , ((myModMask .|. controlMask, xK_j),
-      spawn "amixer -q set Master 5%-")
-
+    , ((myModMask .|. controlMask, xK_j), spawn "amixer -q set Master 5%-")
     -- Increase volume.
-    , ((myModMask .|. controlMask, xK_k),
-      spawn "amixer -q set Master 5%+")
-
+    , ((myModMask .|. controlMask, xK_k), spawn "amixer -q set Master 5%+")
     -- Audio previous.
-    , ((0, 0x1008FF16),
-      spawn "")
-
+    , ((0, 0x1008FF16), spawn "")
     -- Play/pause.
-    , ((0, 0x1008FF14),
-      spawn "")
-
+    , ((0, 0x1008FF14), spawn "")
     -- Audio next.
-    , ((0, 0x1008FF17),
-      spawn "")
--} -- I feel my defaults were working fine before.
+    , ((0, 0x1008FF17), spawn "")
     -- Eject CD tray.
-    , ((0, 0x1008FF2C),
-      spawn "eject -T")
+    , ((0, 0x1008FF2C), spawn "eject -T")
+-}
 
   --------------------------------------------------------------------
   -- "Standard" xmonad key bindings
-  --
 
   -- Close focused window.
-    , ((myModMask .|. shiftMask, xK_c),
-      kill1)
+    , ((myModMask .|. shiftMask, xK_c), kill1)
+
     -- Make focused window always visible
     , ((mySecModMask, xK_v ), windows copyToAll) -- Make focused window always visible
 
@@ -411,96 +404,84 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
     , ((mySecModMask .|. shiftMask , xK_v ), killAllOtherCopies)
 
     -- Cycle through the available layout algorithms.
-    , ((myModMask, xK_space),
-      sendMessage NextLayout)
+    , ((myModMask, xK_space), sendMessage NextLayout)
 
     --  Reset the layouts on the current workspace to default.
-    , ((myModMask .|. shiftMask, xK_space),
-      setLayout $ XMonad.layoutHook conf)
+    , ((myModMask .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
 
     -- Resize viewed windows to the correct size.
-    , ((mySecModMask, xK_n),
-      refresh)
+    , ((mySecModMask, xK_n), refresh)
 
-    -- Cycle through most recent workspaces.
-    , ((mySecModMask, xK_grave),
-      cycleRecentWS [xK_Super_L] xK_Tab xK_grave)
+    -- Cycle through most recent nonEmpty workspaces.Ommitting NSP.
+    , ((mySecModMask, xK_grave), cycleRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_grave)
 
-    -- Cycle through most recent workspaces.
-    , ((mySecModMask, xK_Tab),
-      cycleRecentWS [xK_Super_L] xK_Tab xK_grave)
+    -- Cycle through most recent nonEmpty workspaces. Ommitting NSP
+    , ((mySecModMask, xK_Tab), cycleRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_grave)
 
-    -- Move focus to the next window.
-    , ((myModMask, xK_Tab),
-      windows W.focusDown)
+    -- Cycle through most recent workspaces including empty workspaces. Ommitting NSP.
+    , ((mySecModMask .|. shiftMask, xK_grave), cycleRecentWS_ scratchpadWorkspaceTag [xK_Super_L, xK_Shift_L] xK_Tab xK_grave)
 
-    -- Move focus to the previous window.
-    , ((myModMask .|. shiftMask , xK_Tab),
-      windows W.focusUp)
+    -- Cycle through most recent workspaces including empty workspaces.Ommitting NSP.
+    , ((mySecModMask .|. shiftMask, xK_Tab), cycleRecentWS_ scratchpadWorkspaceTag [xK_Super_L, xK_Shift_L] xK_Tab xK_grave)
 
     -- Move focus to the next window.
-    , ((myModMask, xK_j),
-      windows W.focusDown)
+    , ((myModMask, xK_Tab), windows W.focusDown)
 
     -- Move focus to the previous window.
-    , ((myModMask, xK_k),
-      windows W.focusUp  )
+    , ((myModMask .|. shiftMask , xK_Tab), windows W.focusUp)
+
+    -- Move focus to the next window.
+    , ((myModMask, xK_j), windows W.focusDown)
+
+    -- Move focus to the previous window.
+    , ((myModMask, xK_k), windows W.focusUp)
 
     -- Move focus to the master window.
-    , ((myModMask, xK_m),
-      windows W.focusMaster  )
+    , ((myModMask, xK_m), windows W.focusMaster)
 
     -- Swap the focused window and the master window.
-    , ((myModMask, xK_Return),
-      windows W.swapMaster)
+    , ((myModMask, xK_Return), windows W.swapMaster)
 
-    , ((myModMask .|. shiftMask , xK_m),
-      windows W.swapMaster)
+    , ((myModMask .|. shiftMask , xK_m), windows W.swapMaster)
 
     -- Swap the focused window with the next window.
-    , ((myModMask .|. shiftMask, xK_j),
-      windows W.swapDown  )
+    , ((myModMask .|. shiftMask, xK_j), windows W.swapDown)
 
     -- Swap the focused window with the previous window.
-    , ((myModMask .|. shiftMask, xK_k),
-      windows W.swapUp    )
+    , ((myModMask .|. shiftMask, xK_k), windows W.swapUp)
 
     -- Shrink the master area.
-    , ((myModMask, xK_h),
-      sendMessage Shrink)
+    , ((myModMask, xK_h), sendMessage Shrink)
 
     -- Expand the master area.
-    , ((myModMask, xK_l),
-      sendMessage Expand)
+    , ((myModMask, xK_l), sendMessage Expand)
 
     -- Push window back into tiling.
-    , ((myModMask, xK_t),
-      withFocused $ windows . W.sink)
+    , ((myModMask, xK_t), withFocused $ windows . W.sink)
 
     -- Increment the number of windows in the master area.
-    , ((myModMask, xK_comma),
-      sendMessage (IncMasterN 1))
+    , ((myModMask, xK_comma), sendMessage (IncMasterN 1))
 
     -- Decrement the number of windows in the master area.
-    , ((myModMask, xK_period),
-      sendMessage (IncMasterN (-1)))
+    , ((myModMask, xK_period), sendMessage (IncMasterN (-1)))
 
   -- Toggle the status bar gap.
   -- TODO: update this binding with avoidStruts, ((myModMask, xK_b),
 
   -- Quit xmonad.
-    , ((myModMask .|. shiftMask, xK_q),
-      io (exitWith ExitSuccess))
+    , ((myModMask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
 
     -- Restart xmonad.
-    , ((myModMask, xK_q),
-      restart "xmonad" True)
+    , ((myModMask, xK_q), restart "xmonad" True)
 
     -- For Transcribe me Alt+0
-    , ((mySecModMask, xK_0),
-      spawn "xdotool key alt+0")
-  ]
-  ++ workSpaceKeys
+    , ((mySecModMask, xK_0), spawn "xdotool key alt+0")
+  ] ++ workSpaceKeys
+    where 
+        cycleRecentWS_ :: WorkspaceId -> [KeySym] -> KeySym -> KeySym -> X ()
+        cycleRecentWS_ w = cycleWindowSets $ L.delete w . recentWS (const True)
+        cycleRecentNonEmptyWS_ :: WorkspaceId -> [KeySym] -> KeySym -> KeySym -> X ()
+        cycleRecentNonEmptyWS_ w = cycleWindowSets $ L.delete w . recentWS ( not . null . W.stack)
     -- tried to chain properties for group navigation
     -- where
     --   nextMatchWithThis2 :: (Eq a , Eq b) => XMonad.Actions.GroupNavigation.Direction -> Query a -> Query b -> X ()
@@ -508,9 +489,6 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
     --     propA <- runQuery qryA win
     --     propB <- runQuery qryB win
     --     nextMatch dir ((qryA =? propA) <&&> (qryB =? propB))
-
-
-
 
 {-
   Management hooks. You can use management hooks to enforce certain
@@ -574,9 +552,7 @@ myManagementHooks = [
   , (className =? "Variety") <&&> ((stringProperty "WM_NAME") =? "Variety Recent Downloads" ) --> (hasBorder False >> doFloat)
   , (className =? "Rhythmbox") <&&> ((stringProperty "_GTK_WINDOW_OBJECT_PATH") =? "/org/gnome/Rhythmbox3/window/2" ) --> (hasBorder False >> doFloat)
   -- This is for the Rhythmbox small window feature
-  ]
-          where viewShift = doF . liftM2 (.) W.greedyView W.shift
-
+  ] where viewShift = doF . liftM2 (.) W.greedyView W.shift
 
 {-
   Workspace navigation keybindings. This is probably the part of the
@@ -630,9 +606,8 @@ workSpaceKeys =
     ((m .|. myModMask, key), screenWorkspace sc
       >>= flip whenJust (windows . f))
       | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2]
-      , (f, m) <- [(W.view, 0), (W.shift, shiftMask),(copy, shiftMask .|. controlMask)]
+ , (f, m) <- [(W.view, 0), (W.shift, shiftMask),(copy, shiftMask .|. controlMask)]
   ]
-
 
 {-
   Here we actually stitch together all the configuration settings
@@ -641,31 +616,13 @@ workSpaceKeys =
 -}
 
 main = do
+  xmonad . withSB myStatusBar . ewmhFullscreen . addEwmhWorkspaceSort (pure myFliter) . ewmh . docks $ defaults
   -- xmprocess <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
-  xmonad . withSB myStatusBar . ewmhFullscreen . ewmh $ docks $ defaults 
   -- handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook <+> Bars.dynStatusBarEventHook barCreator barDestoyer,
   -- logHook            = myLogHook {- xmprocess -}
 
--- myLogHook {- h -} = do
---     copies <- wsContainingCopies
---     let check ws | ws `elem` copies = xmobarColor myCopiedWSColor myAltBackGroundWSColor . clickable $ ws
---                  | otherwise = clickable ws
---     -- dynamicLogWithPP
-
-
---     let myLogPPActive = myLogPP {
---             ppCurrent = xmobarColor myCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable
---     }
-
---     -- Bars.multiPP myLogPPActive myLogPP
-
-
-{- Status Bar On multiple Screens -}
--- barCreator :: Bars.DynamicStatusBar
--- barCreator (S sid) = spawnPipe $ "xmobar ~/.config/xmonad/xmobarrc --screen " <> show sid
-
--- barDestoyer :: Bars.DynamicStatusBarCleanup
--- barDestoyer = return ()
+myFliter :: WorkspaceSort
+myFliter = filterOutWs [scratchpadWorkspaceTag]
 
 myStatusBar :: StatusBarConfig
 myStatusBar = statusBarProp "xmobar ~/.config/xmonad/xmobarrc" $ colorCopies myPP
@@ -675,15 +632,21 @@ colorCopies :: PP -> X PP
 colorCopies = copiesPP $ (xmobarColor myCopiedWSColor myAltBackGroundWSColor) . clickable 
 
 myPP :: PP
-myPP = xmobarPP {
-	  ppTitle = xmobarColor myTitleColor myBackGroundWSColor . shorten myTitleLength,
-	  -- For inactive xmobar
+myPP =  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP {
+    ppTitle = xmobarColor myTitleColor myBackGroundWSColor . shorten myTitleLength,
+          -- For inactive xmobar
           -- ppCurrent = xmobarColor myAltCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
           ppCurrent = xmobarColor myCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
           ppVisible = xmobarColor myVisibleWSColor myBackGroundWSColor . wrap myVisibleWSLeft myVisibleWSRight . clickable,
           ppUrgent = xmobarColor myUrgentWSColor myBackGroundWSColor . wrap myUrgentWSLeft myUrgentWSRight . clickable,
-          ppHidden = clickable
-	  }
+          ppHidden = clickable,
+          ppExtras = [nspActive' scratchpads showActive showInactive]
+          }
+      where 
+        showActive = xmobarColor myCurrentWSColor myBackGroundWSColor . first
+        showInactive = xmobarColor myVisibleWSColor myBackGroundWSColor . first
+        first (x:_) = x:[]
+        first []  = "_"
 
 
 defaults = def {
@@ -701,11 +664,16 @@ defaults = def {
     mouseBindings      = myMouseBindings,
 
     -- hooks, layouts
-    layoutHook         = smartBorders $ myLayouts,
-    manageHook         = manageDocks <+>
-                          myManageHook <+>
-                          manageHook def,
-    handleEventHook = handleEventHook def <+> fullscreenEventHook,
+    layoutHook         = smartBorders myLayouts,
+    -- manageHook         = manageDocks <+>
+    --                      namedScratchpadManageHook scratchpads <+>
+    --                      myManageHook <+> 
+    --                      manageHook def,
+    manageHook         = myManageHook
+                         <+> manageHook def,
+    handleEventHook    = fullscreenEventHook <+>
+                         nspTrackHook scratchpads <+>
+                         handleEventHook def,
     startupHook        = myStartupHook
 }
 
@@ -722,3 +690,4 @@ replaceSymbol x   = x:[]
 clickable :: String -> String
 clickable = click . xmobarEscape
   where click l@(x:xs) = "<action=`xdotool key alt+" ++ ( replaceSymbol x ) ++ "` button=1>" ++ l ++ "</action>"
+
