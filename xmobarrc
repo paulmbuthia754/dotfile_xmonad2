@@ -19,12 +19,12 @@ Config {
   bgColor = "black",
   fgColor = "grey",
 
-  -- Position is top left, taking up 83% of screen.
+  -- Position is top left, taking up 82% of screen.
   -- You are likely to have to tweak the width here based on the width
   -- of your screen to make it play nicely with stalonetray, which we
   -- want to be taking up the remainer of the space on the right side
   -- of your screen.
-  position = TopW L 83, 
+  position = TopW L 82, 
 
   -- general behaviour
   lowerOnStart =   False,
@@ -82,7 +82,7 @@ Config {
     Run Com "/bin/bash" ["-c", "~/.config/xmonad/get-volume"] "myvolume" 10,
     -- Get mpris player
     Run Com "/bin/bash" ["-c", "~/bin/my-player-get"] "myplayer" 10,
-    -- Run Com "/bin/bash" ["-c", "~/bin/speaker-color #e6744c"] "speaker-color" 10,
+    Run Com "/bin/bash" ["-c", "~/bin/speaker-color #e6744c"] "speaker-color" 10,
 
     
     -- Trayer Padding
@@ -104,5 +104,8 @@ Config {
    -- Overall template for the layout of the xmobar contents. Note that
    -- space is significant and can be used to add padding.
    -- template = "%XMonadLog% }{ %battery% | %cpu% | %memory% | <action=`speaker-toggle`><fc=%speaker-color%> Vol: %myvolume% </fc></action> | <action=`my-player-next`>Plr: <fc=#6c97d4>%myplayer%</fc> </action> <fc=#e6744c><action=`gnome-calendar`>%date%</action></fc> "
-   template = "%UnsafeXMonadLog% }{ %battery% | %cpu% | %memory% | Vol: %myvolume% | <action=`my-player-next`>Plr: <fc=#6c97d4>%myplayer%</fc> </action> | <fc=#e6744c><action=`gnome-calendar`>%date%</action></fc> "
+
+
+
+   template = "%UnsafeXMonadLog% }{ %cpu% | %memory% | <action=`speaker-toggle`><fc=%speaker-color%>Vol: %myvolume%</fc></action> | <action=`my-player-next`>Plr: <fc=#6c97d4>%myplayer%</fc> </action> | <fc=#e6744c><action=`gnome-calendar`>%date%</action></fc> "
 }

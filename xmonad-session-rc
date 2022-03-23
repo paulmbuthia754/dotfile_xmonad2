@@ -52,6 +52,7 @@ xrandr | grep 'VGA-1 connected' | ifne xrandr --output VGA-1 --auto --right-of L
 # to the left of the primary screen.
 xrandr | grep 'DP-1 connected' | ifne xrandr --output DP-1 --auto --left-of LVDS-1  &
 
+autorandr hp19 &
 
 #
 # LOAD SCREEN BACKGROUNDS
@@ -110,11 +111,12 @@ gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh &
 # xmonad related, but it's handy if you're a vim user.
 # setxkbmap -option 'ctrl:nocaps'
 # nemo-desktop &
+nemo-desktop &
 udiskie -q -s -f nemo &
 eval "$(fasd --init auto)" &
-# (cadence-session-start --system-start ; sleep 5 ; pasystray) &
+(cadence-session-start --system-start ; sleep 5 ; pasystray) &
 pasystray &
-# sleep 10 ; set_sound &
+sleep 10 ; set_sound &
 my-payer-set &
 # tomboy --panel-applet &
 # gtg &
@@ -123,4 +125,5 @@ sleep 10; pactl load-module module-bluetooth-discover &
 blueman-applet &
 indicator-cpufreq &
 psensor &
-ulauncher &
+sleep 15; ulauncher &
+
