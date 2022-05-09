@@ -60,21 +60,21 @@ xrandr | grep 'DP-1 connected' | ifne xrandr --output DP-1 --auto --left-of LVDS
 
 # To set your backgrounds, run nitrogren /path/to/images
  
-/usr/lib/x86_64-linux-gnu/indicator-session/indicatoession-service &
+# /usr/lib/x86_64-linux-gnu/indicator-session/indicatoession-service &
 # /usr/lib/gnome-settings-daemon/gsd-xsettings &
-/usr/libexec/gsd-xsettings &
+# /usr/libexec/gsd-xsettings &
 #   nitrogen --restore &
-nm-applet &
-classicmenu-indicator &
-variety  &
+# nm-applet &
+# classicmenu-indicator &
+# variety  &
 # Start gnome session to auto start my apps
 # cadence &
 # gnome-session &
 # unity-settings-daemon &
 # fdpowermon &
-xfce4-power-manager &
-/usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
-indicator-kdeconnect &
+# xfce4-power-manager &
+# /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd &
+# indicator-kdeconnect &
 #
 # STARTUP ICON TRAY
 #
@@ -99,30 +99,30 @@ indicator-kdeconnect &
 # - window-strut "none" means windows are allowed to cover the tray. In
 #   other words, trust xmonad to handle this part.
 #
-stalonetray  &
+# stalonetray  &
 
 # Run the gnome-keyring-daemon to avoid issues you otherwise may encounter
 # when using gnome applications which expect access to the keyring, such
 # as Empathy. This prevents prompts you may otherwise get for invalid
 # certificates and the like.
-gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh &
-/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
+# gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh &
+# /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
 
 # Remap caps lock to left control. This is not strictly speaking
 # xmonad related, but it's handy if you're a vim user.
 # setxkbmap -option 'ctrl:nocaps'
 # nemo-desktop &
-udiskie -q -s -f nemo &
-eval "$(fasd --init auto)" &
+# udiskie -q -s -f nemo &
+# eval "$(fasd --init auto)" &
 # (cadence-session-start --system-start ; sleep 5 ; pasystray) &
-pasystray &
+# pasystray &
 # sleep 10 ; set_sound &
-my-payer-set &
+# my-payer-set &
 # tomboy --panel-applet &
 # gtg &
 # Unfortunate artifact of pulseaudio bluetooth failure
-sleep 10; pactl load-module module-bluetooth-discover &
-blueman-applet &
-indicator-cpufreq &
-psensor &
-ulauncher &
+# sleep 10; pactl load-module module-bluetooth-discover &
+# blueman-applet &
+# indicator-cpufreq &
+# psensor &
+# ulauncher &

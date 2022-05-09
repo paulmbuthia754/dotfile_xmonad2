@@ -47,6 +47,7 @@ import           XMonad.Layout.Tabbed
 import           XMonad.Layout.ThreeColumns
 import           XMonad.Util.EZConfig
 import           XMonad.Util.Run
+import           XMonad.Util.SpawnOnce
 import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.Loggers.NamedScratchpad
 import           XMonad.Util.WorkspaceCompare
@@ -68,45 +69,78 @@ myFocusedBorderColor = "#ff0000"      -- color of focused border
 myNormalBorderColor  = "#cccccc"      -- color of inactive border
 myBorderWidth        = 1              -- width of border around windows
 myTerminal           = "terminator"   -- which terminal software to use
+myBrowser            = "firefox"
 myIMRosterTitle      = "Buddy List"   -- title of roster on IM workspace
                                       -- use "Buddy List" for Pidgin, but
                                       -- "Contact List" for Empathy
-myScreenshot = "screenshot"
-mySelectScreenshot = "select-screenshot"
+myScreenshot         = "screenshot"
+mySelectScreenshot   = "select-screenshot"
 
 {-
   Xmobar configuration variables. These settings control the appearance
   of text which xmonad is sending to xmobar via the DynamicLog hook.
 -}
 
-myTitleColor     = "#eeeeee"  -- color of window title
-myTitleLength    = 80         -- truncate window title to this length
-myCurrentWSColor = "#e6744c"  -- color of active workspace
-myAltCurrentWSColor = "#11eeff"  -- color of active workspace
-myVisibleWSColor = "#c185a7"  -- color of inactive workspace
-myUrgentWSColor  = "#cc0000"  -- color of workspace with 'urgent' window
-myBackGroundWSColor = "#000000" -- color of background of workspaces
+myTitleColor         = "#eeeeee"  -- color of window title
+myTitleLength        = 80         -- truncate window title to this length
+myCurrentWSColor     = "#e6744c"  -- color of active workspace
+myAltCurrentWSColor  = "#11eeff"  -- color of active workspace
+myVisibleWSColor     = "#c185a7"  -- color of inactive workspace
+myUrgentWSColor      = "#cc0000"  -- color of workspace with 'urgent' window
+myBackGroundWSColor  = "#000000" -- color of background of workspaces
 myAltBackGroundWSColor = "#220011" -- color of background of workspaces
-myCopiedWSColor     = "#77ee99"  -- Light blue for copied windows
-myCurrentWSLeft  = "["        -- wrap active workspace with these
-myCurrentWSRight = "]"
-myAltCurrentWSLeft  = "["        -- wrap active workspace with these
-myAltCurrentWSRight = "]"
-myVisibleWSLeft  = "("        -- wrap inactive workspace with these
-myVisibleWSRight = ")"
-myUrgentWSLeft   = "{"         -- wrap urgent workspace with these
-myUrgentWSRight  = "}"
-myLauncher       = "$(yeganesh -x -- -fn 'monospace-8' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
-myFileLauncher   = "menu-d"
-myFileManager    = "pcmanfm-qt"
-myFileSearch     = "fsearch"
+myCopiedWSColor      = "#77ee99"  -- Light blue for copied windows
+myCurrentWSLeft      = "["        -- wrap active workspace with these
+myCurrentWSRight     = "]"
+myAltCurrentWSLeft   = "["        -- wrap active workspace with these
+myAltCurrentWSRight  = "]"
+myVisibleWSLeft      = "("        -- wrap inactive workspace with these
+myVisibleWSRight     = ")"
+myUrgentWSLeft       = "{"         -- wrap urgent workspace with these
+myUrgentWSRight      = "}"
+myLauncher           = "$(yeganesh -x -- -fn 'monospace-8' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
+myFileLauncher       = "menu-d"
+myFileManager        = "nemo"
+myFileSearch         = "fsearch"
 
 myStartupHook    = do
       setWMName "LG3D"
       windows $ W.greedyView startupWorkspace
       -- Bars.dynStatusBarStartup barCreator barDestoyer
-      spawn "~/.xmonad/startup-hook"
+      -- spawn "~/.xmonad/startup-hook"
+
       nspTrackStartup scratchpads
+
+      -- Gnome Services
+      spawnOnce "/usr/lib/x86_64-linux-gnu/indicator-session/indicator-session-service"
+      spawnOnce "/usr/libexec/gsd-xsettings"
+
+      -- Keyring
+      spawnOnce "gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh"
+      spawnOnce "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
+
+      -- System Tray
+      spawnOnce "stalonetray"
+      spawnOnce "nm-applet"
+      spawnOnce "classicmenu-indicator"
+      spawnOnce "variety"
+      spawnOnce "xfce4-power-manager"
+      spawnOnce "/usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd"
+      spawnOnce "indicator-kdeconnect"
+      spawnOnce "udiskie -q -s -f nemo &"
+      spawnOnce "eval \"$(fasd --init auto)"
+      spawnOnce "pasystray"
+      spawnOnce "my-player-set"
+      spawnOnce "sleep 5; pactl load-module module-bluetooth-discover"
+      spawnOnce "blueman-applet"
+      spawnOnce "indicator-cpufreq"
+      spawnOnce "psensor"
+      spawnOnce "ulauncher"
+
+      spawnOnce "nemo-desktop"
+      spawnOnce $ myTerminal <> " -e \"tmux attach\""
+      spawnOnce $ myBrowser
+
 
 myManageHook = manageDocks
          <+> composeAll myManagementHooks
