@@ -51,12 +51,12 @@ import           XMonad.Util.SpawnOnce
 import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.Loggers.NamedScratchpad
 import           XMonad.Util.WorkspaceCompare
--- import XMonad.Hooks.ICCCMFocus  -- deprecated
 import qualified Data.Map                          as M
 import qualified Data.List                         as L
 import           Data.Ratio                        ((%))
 import           Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet                   as W
+import           XMonad.ManageHook
 
 {-
   Xmonad configuration variables. These settings control some of the
@@ -668,7 +668,6 @@ colorCopies = copiesPP $ (xmobarColor myCopiedWSColor myAltBackGroundWSColor) . 
 myPP :: PP
 myPP =  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP {
     ppTitle = xmobarColor myTitleColor myBackGroundWSColor . shorten myTitleLength,
-          -- For inactive xmobar
           -- ppCurrent = xmobarColor myAltCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
           ppCurrent = xmobarColor myCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
           ppVisible = xmobarColor myVisibleWSColor myBackGroundWSColor . wrap myVisibleWSLeft myVisibleWSRight . clickable,
@@ -724,4 +723,9 @@ replaceSymbol x   = x:[]
 clickable :: String -> String
 clickable = click . xmobarEscape
   where click l@(x:xs) = "<action=`xdotool key alt+" ++ ( replaceSymbol x ) ++ "` button=1>" ++ l ++ "</action>"
+  
+clickTitle :: (String, String) -> String
+clickTitle (original, short) = "<action=echo \"" ++ original ++ "\" | dzen2 -p 3 -h '23' -e 'button1=exit:0' -bg '" ++ myBackGroundWSColor ++"' -fg '" ++ myTitleColor ++ "' -fn 'xft:DejaVu Sans  Mono:size=11:bold:antialias=true'>" ++ short ++ "</action>"
 
+shortenWithTags :: Int -> String -> (String, String)
+shortenWithTags n s = (s, shorten n s)

@@ -53,6 +53,7 @@ xrandr | grep 'VGA-1 connected' | ifne xrandr --output VGA-1 --auto --right-of L
 # to the left of the primary screen.
 xrandr | grep 'DP-1 connected' | ifne xrandr --output DP-1 --auto --left-of LVDS-1  &
 
+autorandr hp19 &
 
 #
 # LOAD SCREEN BACKGROUNDS
@@ -121,6 +122,7 @@ xrandr | grep 'DP-1 connected' | ifne xrandr --output DP-1 --auto --left-of LVDS
 # tomboy --panel-applet &
 # gtg &
 # Unfortunate artifact of pulseaudio bluetooth failure
+
 # sleep 10; pactl load-module module-bluetooth-discover &
 # blueman-applet &
 # indicator-cpufreq &
