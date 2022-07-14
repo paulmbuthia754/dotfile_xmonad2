@@ -16,7 +16,9 @@ export XDG_SESSION_DESKTOP=xmonad
 export XDG_CURRENT_DESKTOP=xmonad
 
 # Load X resources (fixes some font issues)
-xrdb -merge .Xresources  &
+xset +fp ~/.local/share/fonts
+xrdb -merge ~/.Xresources &
+
 
 # Start compositing to support transparency. You can omit this
 # if you prefer not to use any transparency, but it is likely to cause

@@ -51,9 +51,11 @@ import           XMonad.Util.SpawnOnce
 import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.Loggers.NamedScratchpad
 import           XMonad.Util.WorkspaceCompare
+import           XMonad.Util.Cursor
 import qualified Data.Map                          as M
 import qualified Data.List                         as L
 import           Data.Ratio                        ((%))
+import           Data.Char                      (toUpper)
 import           Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet                   as W
 import           XMonad.ManageHook
@@ -68,7 +70,7 @@ mySecModMask         = mod4Mask       -- provides the start key as alternative m
 myFocusedBorderColor = "#ff0000"      -- color of focused border
 myNormalBorderColor  = "#cccccc"      -- color of inactive border
 myBorderWidth        = 1              -- width of border around windows
-myTerminal           = "terminator"   -- which terminal software to use
+myTerminal           = "kitty"   -- which terminal software to use
 myBrowser            = "firefox"
 myIMRosterTitle      = "Buddy List"   -- title of roster on IM workspace
                                       -- use "Buddy List" for Pidgin, but
@@ -99,15 +101,20 @@ myVisibleWSRight     = ")"
 myUrgentWSLeft       = "{"         -- wrap urgent workspace with these
 myUrgentWSRight      = "}"
 myLauncher           = "$(yeganesh -x -- -fn 'monospace-8' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
+myGuiLauncher        = "xfce4-appfinder"
 myFileLauncher       = "menu-d"
 myFileManager        = "nemo"
 myFileSearch         = "fsearch"
+myFont               = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
 
 myStartupHook    = do
       setWMName "LG3D"
       windows $ W.greedyView startupWorkspace
       -- Bars.dynStatusBarStartup barCreator barDestoyer
       -- spawn "~/.xmonad/startup-hook"
+
+      -- Set default cursor
+      setDefaultCursor xC_left_ptr
 
       nspTrackStartup scratchpads
 
@@ -135,11 +142,11 @@ myStartupHook    = do
       spawnOnce "blueman-applet"
       spawnOnce "indicator-cpufreq"
       spawnOnce "psensor"
-      spawnOnce "ulauncher"
+      -- spawnOnce "ulauncher"
 
       spawnOnce "nemo-desktop"
-      spawnOnce $ myTerminal <> " -e \"tmux attach\""
-      spawnOnce $ myBrowser
+      spawnOnce $ myTerminal <> " -e tmux attach"
+      spawnOnce myBrowser
 
 
 myManageHook = manageDocks
@@ -182,7 +189,7 @@ startupWorkspace = "5:Dev"  -- which workspace do you want to be on after launch
 scratchpads :: NamedScratchpads
 scratchpads = [
     -- run htop in terminal
-    NS "htop" (myTerminal <> " -e htop -T htop") (title =? "htop") defaultFloating 
+    NS "htop" (myTerminal <> " -T htop --class htop -e htop") (title =? "htop") defaultFloating 
     , NS "spotify" "spotify" (title =? "Spotify") defaultFloating 
     , NS "qalculate" "qalculate" (title =? "Qalculate!") defaultFloating
     , NS "gnote" "gnote" (title =? "Gnote") defaultFloating
@@ -330,7 +337,6 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
     ((myModMask, xK_b), sendMessage ToggleStruts)
     , ((myModMask, xK_a), sendMessage MirrorShrink)
     , ((myModMask, xK_z), sendMessage MirrorExpand)
-    , ((myModMask, xK_p), spawn myLauncher)
     , ((myModMask, xK_u), focusUrgent)
     , ((0, 0x1008FF12), spawn "amixer -q set Master toggle")
     , ((0, 0x1008FF11), spawn "amixer -q set Master 5%-")
@@ -358,6 +364,10 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
     -- Use this to launch programs without a key binding.
     , ((myModMask, xK_p), spawn myLauncher)
 
+    -- Spawn the launcher using command specified by myGuiLauncher.
+    -- Use this to launch programs graphically without a key binding.
+    , ((mySecModMask, xK_p), spawn myGuiLauncher)
+
     -- Take a selective screenshot using the command specified by mySelectScreenshot.
     , ((myModMask, xK_s), spawn myScreenshot)
 
@@ -384,9 +394,9 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
     , ((myModMask .|. shiftMask,  xK_n), tagToEmptyWorkspace)
     , ((myModMask .|. controlMask, xK_n), sendToEmptyWorkspace)
 
-    -- Rotate through terminator windows
-    , ((mySecModMask, xK_t), nextMatch Forward  (className =? "Terminator"))
-    , ((mySecModMask .|. shiftMask, xK_t), nextMatch Backward (className =? "Terminator"))
+    -- Rotate through terminal windows
+    , ((mySecModMask, xK_Return), nextMatch Forward  $ isClass myTerminal)
+    , ((mySecModMask .|. shiftMask, xK_Return), nextMatch Backward $ isClass myTerminal)
 
     -- Rotate through similar windows
       -- , ((mySecModMask , xK_j), nextMatchWithThis2 Forward  className isOnAnyVisibleWS)
@@ -516,6 +526,12 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
         cycleRecentWS_ w = cycleWindowSets $ L.delete w . recentWS (const True)
         cycleRecentNonEmptyWS_ :: WorkspaceId -> [KeySym] -> KeySym -> KeySym -> X ()
         cycleRecentNonEmptyWS_ w = cycleWindowSets $ L.delete w . recentWS ( not . null . W.stack)
+        capitalize :: String -> String
+        capitalize []   = []
+        capitalize (x:xs) = toUpper x : xs
+
+        isClass :: String -> Query Bool
+        isClass s = className =? s <||> className =? (capitalize s)
     -- tried to chain properties for group navigation
     -- where
     --   nextMatchWithThis2 :: (Eq a , Eq b) => XMonad.Actions.GroupNavigation.Direction -> Query a -> Query b -> X ()
@@ -581,6 +597,8 @@ myManagementHooks = [
   , (className =? "Gimp-2.8") --> doF (W.shift "9:Pix")
   , (className =? "Xfce4-notifyd") --> hasBorder False
   , (className =? "Ulauncher") --> hasBorder False
+  , (className =? "Xfce4-appfinder") --> (hasBorder False >> doFloat)
+  , (className =? "Spotify") <&&> ((stringProperty "WM_NAME") =? "Spotify" ) --> (hasBorder False >> doFloat)
   , (className =? "Variety") <&&> ((stringProperty "WM_NAME") =? "Variety Images" ) --> (hasBorder False >> doFloat)
   , (className =? "Variety") <&&> ((stringProperty "WM_NAME") =? "Variety History" ) --> (hasBorder False >> doFloat)
   , (className =? "Variety") <&&> ((stringProperty "WM_NAME") =? "Variety Recent Downloads" ) --> (hasBorder False >> doFloat)
@@ -667,7 +685,7 @@ colorCopies = copiesPP $ (xmobarColor myCopiedWSColor myAltBackGroundWSColor) . 
 
 myPP :: PP
 myPP =  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP {
-    ppTitle = xmobarColor myTitleColor myBackGroundWSColor . shorten myTitleLength,
+    ppTitle = xmobarColor myTitleColor myBackGroundWSColor . clickTitle . shortenWithTags myTitleLength,
           -- ppCurrent = xmobarColor myAltCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
           ppCurrent = xmobarColor myCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
           ppVisible = xmobarColor myVisibleWSColor myBackGroundWSColor . wrap myVisibleWSLeft myVisibleWSRight . clickable,
@@ -691,6 +709,7 @@ defaults = def {
     workspaces         = myWorkspaces,
     normalBorderColor  = myNormalBorderColor,
     focusedBorderColor = myFocusedBorderColor,
+    -- font               = myFont,
 
     -- key bindings
     keys               = myKeys,
@@ -729,3 +748,4 @@ clickTitle (original, short) = "<action=echo \"" ++ original ++ "\" | dzen2 -p 3
 
 shortenWithTags :: Int -> String -> (String, String)
 shortenWithTags n s = (s, shorten n s)
+

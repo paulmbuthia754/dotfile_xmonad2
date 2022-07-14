@@ -15,7 +15,15 @@
 Config { 
   -- Set font and default foreground/background colors. Note that
   -- the height of xmobar is controlled by the font you use.
-  font = "xft:Bitstream Vera Sans Mono:size=10:bold:antialias=true",
+  -- font = "xft:Bitstream Vera Sans Mono:size=10:bold:antialias=true",
+  -- font = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:hinting=true",
+  -- font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*",
+  -- font = "xft:mononoki Nerd Font:pixelsize=13:antialias=true:hinting=true",
+  font = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:hinting=true",
+  additionalFonts = [ "xft:mononoki Nerd Font:pixelsize=12:antialias=true:hinting=true",
+                      "xft:Font Awesome 6 Free:weight=bold:pixelsize=14", 
+                      "xft:Font Awesome 6 Brands:weight=bold:pixelsize=14" 
+                    ],
   bgColor = "black",
   fgColor = "grey",
 
@@ -24,14 +32,16 @@ Config {
   -- of your screen to make it play nicely with stalonetray, which we
   -- want to be taking up the remainer of the space on the right side
   -- of your screen.
-  position = TopW L 82, 
+  position = TopW L 83, 
 
   -- general behaviour
   lowerOnStart =   False,
   hideOnStart  =   False,
   
   -- Show on all desktops
-  allDesktops = False,
+  allDesktops = True,
+  persistent  = True,
+  iconRoot    = ".config/xmonad/xpm",
 
   -- list of commands which gather information about your system for
   -- presentation in the bar. 
@@ -39,23 +49,35 @@ Config {
     -- Gather and format CPU usage information. 
     -- If it's above 50%, we consider it high usage and make it red.  
     Run Cpu [
+      "-p", "2",
+      "--template", "<fn=2>\xf2db</fn>: <total>%",
       "-H","50",
       "--high","red"
     ] 10,
+    Run DiskU [
+        ("/",                   "<fn=2>\xf390</fn>/:<usedp>% "),
+        ("/home",               "<fn=2>\xf015</fn>:<usedp>% "),
+        ("/media/paul/Media",   "<fn=2>\xf008</fn>:<usedp>% ")
+        ]
+        ["-L", "20", "-H", "50", "-m", "1", "-p", "3"]
+        60,
+
 
     -- Gather and format memory usage information
     Run Memory [
-      "-t","Mem: <usedratio>%"
+      "-t","<fn=2>\xf538</fn>: <usedratio>%"
     ] 10,
 
     -- Date formatting
     Run Date "%a %b %_d %l:%M" "date" 10,
 
+     -- Echos a "battery" icon in front of the pacman updates.
+    Run Com "echo" ["<fn=2>\xf242</fn>"] "baticon" 3600,
+
     -- Battery information. This is likely to require some customization
     -- based upon your specific hardware. Or, for a desktop you may want
     -- to just remove this section entirely.
     Run Battery [
-    -- Run BatteryP ["ADP1", "BAT1"] [
       "-t", "<acstatus> <left>",
       "-H", "80",
       "-L", "20",
@@ -79,12 +101,19 @@ Config {
     -- To get volume information, we run a custom bash script.
     -- This is because the built-in volume support in xmobar is disabled
     -- in Debian and derivatives like Ubuntu. 
-    Run Com "/bin/bash" ["-c", "~/.config/xmonad/get-volume"] "myvolume" 10,
+    -- Run Com "/bin/bash" ["-c", "~/.config/xmonad/get-volume"] "myvolume" 10,
     -- Get mpris player
     Run Com "/bin/bash" ["-c", "~/bin/my-player-get"] "myplayer" 10,
+    Run Com "echo" ["<fn=2>\xf144</fn>"] "playicon" 3600,
     Run Com "/bin/bash" ["-c", "~/bin/speaker-color #e6744c"] "speaker-color" 10,
 
-    
+    Run Volume "default" "Master" [
+        "-t", "<fn=2>\xf028</fn>: <volume>% <status>",
+        "--",
+        "--on", "",
+        "--off", "[M]"
+    ] 10,
+
     -- Trayer Padding
     Run Com "~/.xmonad/trayer-padding-icon.sh" [] "trayerpad" 100,
 
@@ -107,5 +136,5 @@ Config {
 
 
 
-   template = "%UnsafeXMonadLog% }{ %battery% | %cpu% | %memory% | <action=`speaker-toggle`><fc=%speaker-color%>Vol: %myvolume%</fc></action> | <action=`my-player-next`>Plr: <fc=#6c97d4>%myplayer%</fc> </action> | <fc=#e6744c><action=`gnome-calendar`>%date%</action></fc> "
+   template = "<icon=xmonad-16.xpm/> %UnsafeXMonadLog% }{ %disku% | %baticon% %battery% | %cpu% | %memory% | <action=`speaker-toggle`><fc=%speaker-color%>%default:Master% </fc></action> | <action=`my-player-next`> %playicon% <fc=#6c97d4>%myplayer%</fc> </action> | <fc=#e6744c><action=`gnome-calendar`>%date%</action></fc> "
 }

@@ -1,0 +1,21 @@
+/* XPM */
+static char *xmonad_12[] = {
+/* columns rows colors chars-per-pixel */
+"12 12 3 1 ",
+"  c #3D3846",
+". c #FD4D5E",
+"X c None",
+/* pixels */
+"X...XXXXX  X",
+"X...XXXX   X",
+"XX...XXX  XX",
+"XXX...XXXXXX",
+"XXXX...XXXXX",
+"XXXX...XXXXX",
+"XXXX....XXXX",
+"XXX......XXX",
+"XXX..XX...XX",
+"XX...XX...XX",
+"X...XXXX...X",
+"...XXXXXX..."
+};
