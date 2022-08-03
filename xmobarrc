@@ -15,11 +15,8 @@
 Config { 
   -- Set font and default foreground/background colors. Note that
   -- the height of xmobar is controlled by the font you use.
-  -- font = "xft:Bitstream Vera Sans Mono:size=10:bold:antialias=true",
-  -- font = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:hinting=true",
-  -- font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*",
-  -- font = "xft:mononoki Nerd Font:pixelsize=13:antialias=true:hinting=true",
-  font = "xft:Ubuntu:weight=bold:pixelsize=12:antialias=true:hinting=true",
+
+  font = "xft:Ubuntu Nerd Font:weight=bold:pixelsize=12:antialias=true:hinting=true",
   additionalFonts = [ "xft:mononoki Nerd Font:pixelsize=12:antialias=true:hinting=true",
                       "xft:Font Awesome 6 Free:weight=bold:pixelsize=14", 
                       "xft:Font Awesome 6 Brands:weight=bold:pixelsize=14" 
@@ -53,7 +50,7 @@ Config {
       "--template", "<fn=2>\xf2db</fn>: <total>%",
       "-H","50",
       "--high","red"
-    ] 10,
+    ] 20,
     Run DiskU [
         ("/",                   "<fn=2>\xf390</fn>/:<usedp>% "),
         ("/home",               "<fn=2>\xf015</fn>:<usedp>% "),
@@ -96,7 +93,7 @@ Config {
       "-l", "red"
       -- "-a", "notify-send -u critical 'Battery running out!!'",
       -- "-A", "3"
-    ] 10,
+    ] 20,
 
     -- To get volume information, we run a custom bash script.
     -- This is because the built-in volume support in xmobar is disabled
@@ -136,5 +133,5 @@ Config {
 
 
 
-   template = "<icon=xmonad-16.xpm/> %UnsafeXMonadLog% }{ %disku% | %baticon% %battery% | %cpu% | %memory% | <action=`speaker-toggle`><fc=%speaker-color%>%default:Master% </fc></action> | <action=`my-player-next`> %playicon% <fc=#6c97d4>%myplayer%</fc> </action> | <fc=#e6744c><action=`gnome-calendar`>%date%</action></fc> "
+   template = "<action=`xdotool key alt+n`><icon=xmonad-16.xpm/></action> %UnsafeXMonadLog% }{ %disku% | %baticon% %battery% | %cpu% | %memory% | <action=`speaker-toggle`><fc=%speaker-color%>%default:Master% </fc></action> | <action=`my-player-next`><fc=#6c97d4> %playicon% %myplayer%</fc> </action> | <fc=#e6744c><action=`gnome-calendar`>%date%</action></fc> "
 }

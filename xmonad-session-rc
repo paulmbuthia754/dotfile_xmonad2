@@ -16,7 +16,7 @@ export XDG_SESSION_DESKTOP=xmonad
 export XDG_CURRENT_DESKTOP=xmonad
 
 # Load X resources (fixes some font issues)
-xset +fp ~/.local/share/fonts
+xset +fp ~/.local/share/fonts & 
 xrdb -merge ~/.Xresources &
 
 
