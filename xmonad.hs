@@ -15,11 +15,13 @@
 -}
 
 import           Control.Monad                     (liftM2)
+import           Control.Arrow                     ((&&&))
 import           System.Exit
 import           System.IO
 import           XMonad
 import           XMonad.Actions.CopyWindow
 import           XMonad.Actions.CycleRecentWS
+import           XMonad.Actions.CycleShiftRecentWS
 import           XMonad.Actions.FindEmptyWorkspace
 import qualified XMonad.Actions.FlexibleResize     as Flex
 import           XMonad.Actions.FloatSnap
@@ -103,6 +105,7 @@ myUrgentWSRight      = "}"
 myLauncher           = "$(yeganesh -x -- -fn 'monospace-8' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
 myGuiLauncher        = "xfce4-appfinder"
 myFileLauncher       = "menu-d"
+myAltLauncher        = "rofi -show combi -combi-modes \"window,ssh,drun\" -modes combi"
 myFileManager        = "nemo"
 myFileSearch         = "fsearch"
 myFont               = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
@@ -142,6 +145,7 @@ myStartupHook    = do
       spawnOnce "blueman-applet"
       spawnOnce "indicator-cpufreq"
       spawnOnce "psensor"
+      spawnOnce "kdeconnect-indicator"
       -- spawnOnce "ulauncher"
 
       spawnOnce "nemo-desktop"
@@ -368,6 +372,10 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
     -- Use this to launch programs graphically without a key binding.
     , ((mySecModMask, xK_p), spawn myGuiLauncher)
 
+    -- Spawn the launcher using command specified by myGuiLauncher.
+    -- Use this to launch programs graphically without a key binding.
+    , ((mySecModMask .|. shiftMask, xK_p), spawn myAltLauncher)
+
     -- Take a selective screenshot using the command specified by mySelectScreenshot.
     , ((myModMask, xK_s), spawn myScreenshot)
 
@@ -462,11 +470,17 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
     -- Cycle through most recent nonEmpty workspaces. Ommitting NSP
     , ((mySecModMask, xK_Tab), cycleRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_grave)
 
+    -- Cycle shift through most recent nonEmpty workspaces.Ommitting NSP.
+    , ((mySecModMask .|. shiftMask, xK_grave), cycleShiftRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_grave)
+
+    -- Cycle shift through most recent nonEmpty workspaces. Ommitting NSP
+    , ((mySecModMask .|. shiftMask, xK_Tab), cycleShiftRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_grave)
+
     -- Cycle through most recent workspaces including empty workspaces. Ommitting NSP.
-    , ((mySecModMask .|. shiftMask, xK_grave), cycleRecentWS_ scratchpadWorkspaceTag [xK_Super_L, xK_Shift_L] xK_Tab xK_grave)
+    , ((mySecModMask .|. controlMask, xK_grave), cycleRecentWS_ scratchpadWorkspaceTag [xK_Super_L, xK_Shift_L] xK_Tab xK_grave)
 
     -- Cycle through most recent workspaces including empty workspaces.Ommitting NSP.
-    , ((mySecModMask .|. shiftMask, xK_Tab), cycleRecentWS_ scratchpadWorkspaceTag [xK_Super_L, xK_Shift_L] xK_Tab xK_grave)
+    , ((mySecModMask .|. controlMask, xK_Tab), cycleRecentWS_ scratchpadWorkspaceTag [xK_Super_L, xK_Shift_L] xK_Tab xK_grave)
 
     -- Move focus to the next window.
     , ((myModMask, xK_Tab), windows W.focusDown)
@@ -522,10 +536,6 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
     , ((mySecModMask, xK_0), spawn "xdotool key alt+0")
   ] ++ workSpaceKeys
     where 
-        cycleRecentWS_ :: WorkspaceId -> [KeySym] -> KeySym -> KeySym -> X ()
-        cycleRecentWS_ w = cycleWindowSets $ L.delete w . recentWS (const True)
-        cycleRecentNonEmptyWS_ :: WorkspaceId -> [KeySym] -> KeySym -> KeySym -> X ()
-        cycleRecentNonEmptyWS_ w = cycleWindowSets $ L.delete w . recentWS ( not . null . W.stack)
         capitalize :: String -> String
         capitalize []   = []
         capitalize (x:xs) = toUpper x : xs
