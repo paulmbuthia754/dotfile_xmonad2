@@ -1,4 +1,9 @@
 #!/bin/sh
 
 ~/.config/xmonad/xmonad-session-rc &
-exec xmonad "$@"
+if [ -e ~/.cache/xmonad/xmonad-x86_64-linux ] ; then
+    exec ~/.cache/xmonad/xmonad-x86_64-linux "$@"
+else
+    exec xmonad "$@"
+fi
+

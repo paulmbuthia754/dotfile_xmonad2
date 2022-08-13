@@ -243,7 +243,7 @@ defaultLayouts = avoidStruts(
 
   -- Circle layout places the master window in the center of the screen.
   -- Remaining windows appear in a circle around it
-  -- ||| Circle
+  ||| Circle
 
   -- Grid layout tries to equally distribute windows in the available
   -- space, increasing the number of columns and rows as necessary.
@@ -527,7 +527,10 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
   -- TODO: update this binding with avoidStruts, ((myModMask, xK_b),
 
   -- Quit xmonad.
-    , ((myModMask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
+    , ((mySecModMask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
+
+  -- Logout utility
+    , ((myModMask .|. shiftMask, xK_q), spawn "byebye")
 
     -- Restart xmonad.
     , ((myModMask, xK_q), restart "xmonad" True)
@@ -608,10 +611,11 @@ myManagementHooks = [
   , (className =? "Xfce4-notifyd") --> hasBorder False
   , (className =? "Ulauncher") --> hasBorder False
   , (className =? "Xfce4-appfinder") --> (hasBorder False >> doFloat)
-  , (className =? "Spotify") <&&> ((stringProperty "WM_NAME") =? "Spotify" ) --> (hasBorder False >> doFloat)
-  , (className =? "Variety") <&&> ((stringProperty "WM_NAME") =? "Variety Images" ) --> (hasBorder False >> doFloat)
-  , (className =? "Variety") <&&> ((stringProperty "WM_NAME") =? "Variety History" ) --> (hasBorder False >> doFloat)
-  , (className =? "Variety") <&&> ((stringProperty "WM_NAME") =? "Variety Recent Downloads" ) --> (hasBorder False >> doFloat)
+  , (className =? "Spotify") <&&> (stringProperty "WM_NAME" =? "Spotify" ) --> (hasBorder False >> doFloat)
+  , (className =? "Byebye") <&&> (stringProperty "WM_NAME" =? "Byebye" ) --> (hasBorder False >> doFloat)
+  , (className =? "Variety") <&&> (stringProperty "WM_NAME" =? "Variety Images" ) --> (hasBorder False >> doFloat)
+  , (className =? "Variety") <&&> (stringProperty "WM_NAME" =? "Variety History" ) --> (hasBorder False >> doFloat)
+  , (className =? "Variety") <&&> (stringProperty "WM_NAME" =? "Variety Recent Downloads" ) --> (hasBorder False >> doFloat)
   , (className =? "Rhythmbox") <&&> ((stringProperty "_GTK_WINDOW_OBJECT_PATH") =? "/org/gnome/Rhythmbox3/window/2" ) --> (hasBorder False >> doFloat)
   -- This is for the Rhythmbox small window feature
   ] where viewShift = doF . liftM2 (.) W.greedyView W.shift
