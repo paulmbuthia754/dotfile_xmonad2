@@ -54,6 +54,7 @@ import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.Loggers.NamedScratchpad
 import           XMonad.Util.WorkspaceCompare
 import           XMonad.Util.Cursor
+-- import           XMonad.Util.Hacks
 import qualified Data.Map                          as M
 import qualified Data.List                         as L
 import           Data.Ratio                        ((%))
@@ -738,6 +739,8 @@ defaults = def {
     manageHook         = myManageHook
                          <+> manageHook def,
     handleEventHook    = fullscreenEventHook <+>
+                         -- trayAbovePanelEventHook (className =? "stalonetray") (appName =? "xmobar") <+>
+                         -- trayPaddingXmobarEventHook (className =? "stalonetray") "_TRAYPAD" <+>
                          nspTrackHook scratchpads <+>
                          handleEventHook def,
     startupHook        = myStartupHook
