@@ -16,10 +16,10 @@ Config {
   -- Set font and default foreground/background colors. Note that
   -- the height of xmobar is controlled by the font you use.
 
-  font = "xft:Ubuntu Nerd Font:weight=bold:pixelsize=12:antialias=true:hinting=true",
-  additionalFonts = [ "xft:mononoki Nerd Font:pixelsize=12:antialias=true:hinting=true",
-                      "xft:Font Awesome 6 Free:weight=bold:pixelsize=14", 
-                      "xft:Font Awesome 6 Brands:weight=bold:pixelsize=14" 
+  font = "xft:Ubuntu Nerd Font:weight=bold:pixelsize=13:antialias=true:hinting=true",
+  additionalFonts = [ "xft:mononoki Nerd Font:pixelsize=13:antialias=true:hinting=true",
+                      "xft:Font Awesome 6 Free:weight=bold:pixelsize=13", 
+                      "xft:Font Awesome 6 Brands:weight=bold:pixelsize=13" 
                     ],
   bgColor = "black",
   fgColor = "grey",
@@ -29,10 +29,11 @@ Config {
   -- of your screen to make it play nicely with stalonetray, which we
   -- want to be taking up the remainer of the space on the right side
   -- of your screen.
-  position = TopW L 83, 
+  position = TopW L 82,
 
   -- general behaviour
   lowerOnStart =   False,
+  overrideRedirect = True,
   hideOnStart  =   False,
   
   -- Show on all desktops
@@ -117,6 +118,7 @@ Config {
     -- This line tells xmobar to read input from stdin. That's how we
     -- get the information that xmonad is sending it for display.
     -- Run UnsafeStdinReader,
+    Run UnsafeNamedXPropertyLog "_TRAYPAD" "pad",
     Run UnsafeXMonadLog
    ],
 
@@ -133,5 +135,5 @@ Config {
 
 
 
-   template = "<action=`xdotool key alt+n`><icon=xmonad-16.xpm/></action> %UnsafeXMonadLog% }{ %disku% | %baticon% %battery% | %cpu% | %memory% | <action=`speaker-toggle`><fc=%speaker-color%>%default:Master% </fc></action> | <action=`my-player-next`><fc=#6c97d4> %playicon% %myplayer%</fc> </action> | <fc=#e6744c><action=`gnome-calendar`>%date%</action></fc> "
+   template = "<action=`xdotool key alt+n`><icon=xmonad-16.xpm/></action> %UnsafeXMonadLog% }{ %disku% | %baticon% %battery% | %cpu% | %memory% | <action=`speaker-toggle`><fc=%speaker-color%>%default:Master% </fc></action> | <action=`my-player-next`><fc=#6c97d4> %playicon% %myplayer%</fc> </action> | <fc=#e6744c><action=`gnome-calendar`>%date%</action></fc>"
 }

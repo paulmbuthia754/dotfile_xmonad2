@@ -36,6 +36,7 @@ import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops         hiding (fullscreenEventHook)
 import qualified XMonad.Hooks.EwmhDesktops         as E
 import           XMonad.Hooks.ManageDocks
+import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
 import           XMonad.Hooks.UrgencyHook
 import           XMonad.Layout.Circle
@@ -54,7 +55,7 @@ import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.Loggers.NamedScratchpad
 import           XMonad.Util.WorkspaceCompare
 import           XMonad.Util.Cursor
--- import           XMonad.Util.Hacks
+import           XMonad.Util.Hacks
 import qualified Data.Map                          as M
 import qualified Data.List                         as L
 import           Data.Ratio                        ((%))
@@ -153,11 +154,6 @@ myStartupHook    = do
       spawnOnce $ myTerminal <> " -e tmux attach"
       spawnOnce myBrowser
 
-
-myManageHook = manageDocks
-         <+> composeAll myManagementHooks
-         <+> namedScratchpadManageHook scratchpads
-
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
 
@@ -220,7 +216,7 @@ scratchpads = [
 -- appear if there is more than one visible window.
 -- "avoidStruts" modifier makes it so that the layout provides
 -- space for the status bar at the top of the screen.
-defaultLayouts = avoidStruts(
+defaultLayouts = avoidStruts (
   -- ResizableTall layout has a large master window on the left,
   -- and remaining windows tile on the right. By default each area
   -- takes up half the screen, but you can resize using "super-h" and
@@ -539,13 +535,13 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
     -- For Transcribe me Alt+0
     , ((mySecModMask, xK_0), spawn "xdotool key alt+0")
   ] ++ workSpaceKeys
-    where 
-        capitalize :: String -> String
-        capitalize []   = []
-        capitalize (x:xs) = toUpper x : xs
 
-        isClass :: String -> Query Bool
-        isClass s = className =? s <||> className =? (capitalize s)
+capitalize :: String -> String
+capitalize []   = []
+capitalize (x:xs) = toUpper x : xs
+
+isClass :: String -> Query Bool
+isClass s = className =? s <||> className =? (capitalize s)
     -- tried to chain properties for group navigation
     -- where
     --   nextMatchWithThis2 :: (Eq a , Eq b) => XMonad.Actions.GroupNavigation.Direction -> Query a -> Query b -> X ()
@@ -600,7 +596,7 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
 myManagementHooks :: [ManageHook]
 myManagementHooks = [
     resource =? "synapse" --> doIgnore
-  , resource =? "stalonetray" --> doIgnore
+  , isClass  "stalonetray" --> doIgnore
   , className =? "rdesktop" --> doFloat
   , className =? "Orage" --> doFloat
   , className =? "Gnome-calendar" --> doFloat
@@ -619,7 +615,13 @@ myManagementHooks = [
   , (className =? "Variety") <&&> (stringProperty "WM_NAME" =? "Variety Recent Downloads" ) --> (hasBorder False >> doFloat)
   , (className =? "Rhythmbox") <&&> ((stringProperty "_GTK_WINDOW_OBJECT_PATH") =? "/org/gnome/Rhythmbox3/window/2" ) --> (hasBorder False >> doFloat)
   -- This is for the Rhythmbox small window feature
+  -- Try to always raise the stalonetray window
   ] where viewShift = doF . liftM2 (.) W.greedyView W.shift
+
+
+myManageHook = manageDocks
+         <+> composeAll myManagementHooks
+         <+> namedScratchpadManageHook scratchpads
 
 {-
   Workspace navigation keybindings. This is probably the part of the
@@ -683,7 +685,7 @@ workSpaceKeys =
 -}
 
 main = do
-  xmonad . withSB myStatusBar . ewmhFullscreen . addEwmhWorkspaceSort (pure myFliter) . ewmh . docks $ defaults
+  xmonad . withSB myStatusBar . docks . addEwmhWorkspaceSort (pure myFliter) . ewmhFullscreen . ewmh $ defaults
   -- xmprocess <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
   -- handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook <+> Bars.dynStatusBarEventHook barCreator barDestoyer,
   -- logHook            = myLogHook {- xmprocess -}
@@ -739,8 +741,8 @@ defaults = def {
     manageHook         = myManageHook
                          <+> manageHook def,
     handleEventHook    = fullscreenEventHook <+>
-                         -- trayAbovePanelEventHook (className =? "stalonetray") (appName =? "xmobar") <+>
-                         -- trayPaddingXmobarEventHook (className =? "stalonetray") "_TRAYPAD" <+>
+                         trayPaddingXmobarEventHook (className =? "stalonetray") "_TRAYPAD" <+>
+                         trayAbovePanelEventHook (className =? "stalonetray") (className =? "xmobar") <+>
                          nspTrackHook scratchpads <+>
                          handleEventHook def,
     startupHook        = myStartupHook
@@ -758,10 +760,10 @@ replaceSymbol x   = x:[]
 
 clickable :: String -> String
 clickable = click . xmobarEscape
-  where click l@(x:xs) = "<action=`xdotool key alt+" ++ ( replaceSymbol x ) ++ "` button=1>" ++ l ++ "</action>"
+  where click l@(x:xs) = "<action=`xdotool key alt+" ++ replaceSymbol x ++ "` button=1>" ++ l ++ "</action>"
   
 clickTitle :: (String, String) -> String
-clickTitle (original, short) = "<action=echo \"" ++ original ++ "\" | dzen2 -p 3 -h '23' -e 'button1=exit:0' -bg '" ++ myBackGroundWSColor ++"' -fg '" ++ myTitleColor ++ "' -fn 'xft:DejaVu Sans  Mono:size=11:bold:antialias=true'>" ++ short ++ "</action>"
+clickTitle (original, short) = "<action=`echo \"" ++ original ++ "\" | dzen2 -p 3 -h '23' -e 'button1=exit:0' -bg '" ++ myBackGroundWSColor ++"' -fg '" ++ myTitleColor ++ "' -fn 'xft:DejaVu Sans  Mono:size=11:bold:antialias=true'`>" ++ short ++ "</action>"
 
 shortenWithTags :: Int -> String -> (String, String)
 shortenWithTags n s = (s, shorten n s)
