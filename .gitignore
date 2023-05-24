@@ -6,4 +6,6 @@ xmonad.errors
 stack.yaml.lock
 xmonad-x86_64-linux
 *.swp
+*.o
+*.hi
 .stack-work/
