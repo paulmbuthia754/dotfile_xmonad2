@@ -148,8 +148,8 @@ myStartupHook    = do
       spawnOnce "indicator-cpufreq"
       spawnOnce "psensor"
       spawnOnce "kdeconnect-indicator"
+      spawnOnce "cadence --minimized"
       -- spawnOnce "ulauncher"
-
       spawnOnce "nemo-desktop"
       spawnOnce $ myTerminal <> " -e tmux attach"
       spawnOnce myBrowser
