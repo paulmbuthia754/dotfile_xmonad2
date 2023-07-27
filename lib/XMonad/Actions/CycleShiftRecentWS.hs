@@ -73,7 +73,7 @@ cycleShiftWindowSets genOptions mods keyNext keyPrev = do
                    | t == keyPress && s == keyPrev -> setOption (n-1)
                    | t == keyRelease && s `elem` mods -> return ()
                    | otherwise                        -> setOption n
-    io $ grabKeyboard d root False grabModeAsync grabModeAsync currentTime
+    _ <- io $ grabKeyboard d root False grabModeAsync grabModeAsync currentTime
     setOption 0
     io $ ungrabKeyboard d currentTime
     where

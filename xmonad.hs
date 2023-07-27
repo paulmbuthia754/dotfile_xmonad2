@@ -15,41 +15,41 @@
 -}
 
 import           Control.Monad                     (liftM2)
-import           Control.Arrow                     ((&&&))
+-- import           Control.Arrow                     ((&&&))
 import           System.Exit
-import           System.IO
+-- import           System.IO
 import           XMonad
 import           XMonad.Actions.CopyWindow
-import           XMonad.Actions.CycleRecentWS
+-- import           XMonad.Actions.CycleRecentWS
 import           XMonad.Actions.CycleShiftRecentWS
 import           XMonad.Actions.FindEmptyWorkspace
 import qualified XMonad.Actions.FlexibleResize     as Flex
 import           XMonad.Actions.FloatSnap
 import           XMonad.Actions.GroupNavigation
 import           XMonad.Actions.Plane
-import           XMonad.Actions.SimpleDate
-import           XMonad.Actions.WindowGo
+-- import           XMonad.Actions.SimpleDate
+-- import           XMonad.Actions.WindowGo
 -- import           XMonad.Hooks.DynamicBars          as Bars
 import           XMonad.Hooks.StatusBar
 import           XMonad.Hooks.StatusBar.PP
-import           XMonad.Hooks.DynamicLog
+-- import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops         hiding (fullscreenEventHook)
-import qualified XMonad.Hooks.EwmhDesktops         as E
+-- import qualified XMonad.Hooks.EwmhDesktops         as E
 import           XMonad.Hooks.ManageDocks
-import           XMonad.Hooks.ManageHelpers
+-- import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
 import           XMonad.Hooks.UrgencyHook
 import           XMonad.Layout.Circle
 import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.Grid
-import           XMonad.Layout.IM
+-- import           XMonad.Layout.IM
 import           XMonad.Layout.NoBorders
-import           XMonad.Layout.PerWorkspace        (onWorkspace)
+-- import           XMonad.Layout.PerWorkspace        (onWorkspace)
 import           XMonad.Layout.ResizableTile
 import           XMonad.Layout.Tabbed
 import           XMonad.Layout.ThreeColumns
-import           XMonad.Util.EZConfig
-import           XMonad.Util.Run
+-- import           XMonad.Util.EZConfig
+-- import           XMonad.Util.Run
 import           XMonad.Util.SpawnOnce
 import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.Loggers.NamedScratchpad
@@ -57,28 +57,36 @@ import           XMonad.Util.WorkspaceCompare
 import           XMonad.Util.Cursor
 import           XMonad.Util.Hacks
 import qualified Data.Map                          as M
-import qualified Data.List                         as L
-import           Data.Ratio                        ((%))
+-- import qualified Data.List                         as L
+-- import           Data.Ratio                        ((%))
 import           Data.Char                      (toUpper)
-import           Graphics.X11.ExtraTypes.XF86
+-- import           Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet                   as W
-import           XMonad.ManageHook
+-- import           XMonad.ManageHook
 
 {-
   Xmonad configuration variables. These settings control some of the
   simpler parts of xmonad's behavior and are straightforward to tweak.
 -}
 
+myModMask , mySecModMask  :: KeyMask
 myModMask            = mod1Mask       -- changes the mod key to "alt"
 mySecModMask         = mod4Mask       -- provides the start key as alternative modifier
+myFocusedBorderColor, myNormalBorderColor :: String  
 myFocusedBorderColor = "#ff0000"      -- color of focused border
 myNormalBorderColor  = "#cccccc"      -- color of inactive border
+
+myBorderWidth       :: Dimension 
 myBorderWidth        = 1              -- width of border around windows
+
+myTerminal, myBrowser, myIMRosterTitle :: String
 myTerminal           = "kitty"   -- which terminal software to use
 myBrowser            = "firefox"
 myIMRosterTitle      = "Buddy List"   -- title of roster on IM workspace
                                       -- use "Buddy List" for Pidgin, but
                                       -- "Contact List" for Empathy
+
+myScreenshot,  mySelectScreenshot :: String
 myScreenshot         = "screenshot"
 mySelectScreenshot   = "select-screenshot"
 
@@ -135,10 +143,12 @@ myStartupHook    = do
       spawnOnce "stalonetray"
       spawnOnce "nm-applet"
       spawnOnce "classicmenu-indicator"
+      spawnOnce "pulseaudio --start"
       spawnOnce "variety"
       spawnOnce "xfce4-power-manager"
       spawnOnce "/usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd"
       spawnOnce "indicator-kdeconnect"
+      spawnOnce "indicator-multiload"
       spawnOnce "udiskie -q -s -f nemo &"
       spawnOnce "eval \"$(fasd --init auto)"
       spawnOnce "pasystray"
@@ -148,7 +158,7 @@ myStartupHook    = do
       spawnOnce "indicator-cpufreq"
       spawnOnce "psensor"
       spawnOnce "kdeconnect-indicator"
-      spawnOnce "cadence --minimized"
+      -- spawnOnce "cadence --minimized"
       -- spawnOnce "ulauncher"
       spawnOnce "nemo-desktop"
       spawnOnce $ myTerminal <> " -e tmux attach"
