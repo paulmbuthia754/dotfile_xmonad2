@@ -1,6 +1,3 @@
-[submodule "xmobar"]
-	path = xmobar
-	url = https://codeberg.org/xmobar/xmobar
 [submodule "xmonad"]
 	path = xmonad
 	url = https://github.com/xmonad/xmonad.git
