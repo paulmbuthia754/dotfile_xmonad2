@@ -1,0 +1,34 @@
+name: my-xmonad
+version: 0.1.0.0
+
+ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -j -dynamic -threaded
+
+dependencies:
+  - base
+  - containers
+  - data-default
+  - directory
+  - filepath
+  - fuzzy
+  - monoid-subclasses
+  - mtl
+  - process
+  - regex-tdfa
+  - utf8-string
+  - unix
+  - X11
+  - xmobar
+  - xmonad >= 0.17
+  - xmonad-contrib >= 0.17
+
+source-dirs:
+  - lib
+  - .
+
+executables:
+  my-xmonad:
+    main: xmonad.hs
+    language: GHC2021
+    dependencies:
+      - xmonad
+      - X11 >= 1.10
