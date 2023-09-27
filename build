@@ -11,7 +11,7 @@ SRC_DIR=$HOME/.config/xmonad
 
 # The name of the executable produced by stack.  This comes from the
 # executable section of your *.cabal or package.yaml file.
-EXE_NAME=my-xmonad
+EXE_NAME=xmonad
 EXE_XMOBAR=xmobar
 
 ################################################################################
@@ -26,8 +26,6 @@ FAIL=0
 cd $SRC_DIR
 
 stack build 2>.log || FAIL=1
-stack install $EXE_NAME 2>.log || FAIL=3
-stack install $EXE_XMOBAR 2>.log || FAIL=3
 
 # Create a hard link at the requested destination, replacing any existing one.
 ln -f -T $(stack exec -- which $EXE_NAME) $1 2>.log || FAIL=2

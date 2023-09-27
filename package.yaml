@@ -26,7 +26,7 @@ source-dirs:
   - .
 
 executables:
-  my-xmonad:
+  xmonad:
     main: xmonad.hs
     language: GHC2021
     dependencies:

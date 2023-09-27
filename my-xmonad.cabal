@@ -8,34 +8,6 @@ name:           my-xmonad
 version:        0.1.0.0
 build-type:     Simple
 
-executable my-xmonad
-  main-is: xmonad.hs
-  other-modules:
-      XMonad.Actions.CycleShiftRecentWS
-      Paths_my_xmonad
-  hs-source-dirs:
-      lib
-      ./
-  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -j -dynamic -threaded
-  build-depends:
-      X11
-    , base
-    , containers
-    , data-default
-    , directory
-    , filepath
-    , fuzzy
-    , monoid-subclasses
-    , mtl
-    , process
-    , regex-tdfa
-    , unix
-    , utf8-string
-    , xmobar
-    , xmonad
-    , xmonad-contrib >=0.17
-  default-language: GHC2021
-
 executable xmobar
   main-is: xmobar.hs
   other-modules:
@@ -61,5 +33,33 @@ executable xmobar
     , utf8-string
     , xmobar
     , xmonad >=0.17
+    , xmonad-contrib >=0.17
+  default-language: GHC2021
+
+executable xmonad
+  main-is: xmonad.hs
+  other-modules:
+      XMonad.Actions.CycleShiftRecentWS
+      Paths_my_xmonad
+  hs-source-dirs:
+      lib
+      ./
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -j -dynamic -threaded
+  build-depends:
+      X11
+    , base
+    , containers
+    , data-default
+    , directory
+    , filepath
+    , fuzzy
+    , monoid-subclasses
+    , mtl
+    , process
+    , regex-tdfa
+    , unix
+    , utf8-string
+    , xmobar
+    , xmonad
     , xmonad-contrib >=0.17
   default-language: GHC2021

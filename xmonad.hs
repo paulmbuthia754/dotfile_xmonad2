@@ -109,7 +109,7 @@ myVisibleWSColor     = "#c185a7"  -- color of inactive workspace
 myUrgentWSColor :: String
 myUrgentWSColor      = "#cc0000"  -- color of workspace with 'urgent' window
 myBackGroundWSColor :: String
-myBackGroundWSColor  = "#000000" -- color of background of workspaces
+myBackGroundWSColor  = "#000001" -- color of background of workspaces
 myAltBackGroundWSColor :: String
 myAltBackGroundWSColor = "#220011" -- color of background of workspaces
 myCopiedWSColor :: String

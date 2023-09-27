@@ -4,6 +4,5 @@
 if [ -e ~/.cache/xmonad/xmonad-x86_64-linux ] ; then
     exec ~/.cache/xmonad/xmonad-x86_64-linux "$@"
 else
-    exec my-xmonad "$@"
+    exec xmonad "$@"
 fi
-
