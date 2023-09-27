@@ -43,6 +43,7 @@ import           XMonad.Layout.Circle
 import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.Grid
 -- import           XMonad.Layout.IM
+import           XMonad.Layout.LayoutHints
 import           XMonad.Layout.NoBorders
 -- import           XMonad.Layout.PerWorkspace        (onWorkspace)
 import           XMonad.Layout.ResizableTile
@@ -72,11 +73,11 @@ import qualified XMonad.StackSet                   as W
 myModMask , mySecModMask  :: KeyMask
 myModMask            = mod1Mask       -- changes the mod key to "alt"
 mySecModMask         = mod4Mask       -- provides the start key as alternative modifier
-myFocusedBorderColor, myNormalBorderColor :: String  
+myFocusedBorderColor, myNormalBorderColor :: String
 myFocusedBorderColor = "#ff0000"      -- color of focused border
 myNormalBorderColor  = "#cccccc"      -- color of inactive border
 
-myBorderWidth       :: Dimension 
+myBorderWidth       :: Dimension
 myBorderWidth        = 1              -- width of border around windows
 
 myTerminal, myBrowser, myIMRosterTitle :: String
@@ -95,31 +96,56 @@ mySelectScreenshot   = "select-screenshot"
   of text which xmonad is sending to xmobar via the DynamicLog hook.
 -}
 
+myTitleColor :: String
 myTitleColor         = "#eeeeee"  -- color of window title
+myTitleLength :: Int
 myTitleLength        = 80         -- truncate window title to this length
+myCurrentWSColor :: String
 myCurrentWSColor     = "#e6744c"  -- color of active workspace
+myAltCurrentWSColor :: String
 myAltCurrentWSColor  = "#11eeff"  -- color of active workspace
+myVisibleWSColor :: String
 myVisibleWSColor     = "#c185a7"  -- color of inactive workspace
+myUrgentWSColor :: String
 myUrgentWSColor      = "#cc0000"  -- color of workspace with 'urgent' window
+myBackGroundWSColor :: String
 myBackGroundWSColor  = "#000000" -- color of background of workspaces
+myAltBackGroundWSColor :: String
 myAltBackGroundWSColor = "#220011" -- color of background of workspaces
+myCopiedWSColor :: String
 myCopiedWSColor      = "#77ee99"  -- Light blue for copied windows
+myCurrentWSLeft :: String
 myCurrentWSLeft      = "["        -- wrap active workspace with these
+myCurrentWSRight :: String
 myCurrentWSRight     = "]"
+myAltCurrentWSLeft :: String
 myAltCurrentWSLeft   = "["        -- wrap active workspace with these
+myAltCurrentWSRight :: String
 myAltCurrentWSRight  = "]"
+myVisibleWSLeft :: String
 myVisibleWSLeft      = "("        -- wrap inactive workspace with these
+myVisibleWSRight :: String
 myVisibleWSRight     = ")"
+myUrgentWSLeft :: String
 myUrgentWSLeft       = "{"         -- wrap urgent workspace with these
+myUrgentWSRight :: String
 myUrgentWSRight      = "}"
+myLauncher :: String
 myLauncher           = "$(yeganesh -x -- -fn 'monospace-8' -nb '#000000' -nf '#FFFFFF' -sb '#7C7C7C' -sf '#CEFFAC')"
+myGuiLauncher :: String
 myGuiLauncher        = "xfce4-appfinder"
+myFileLauncher :: String
 myFileLauncher       = "menu-d"
+myAltLauncher :: String
 myAltLauncher        = "rofi -show combi -combi-modes \"window,ssh,drun\" -modes combi"
+myFileManager :: String
 myFileManager        = "nemo"
+myFileSearch :: String
 myFileSearch         = "fsearch"
+myFont :: String
 myFont               = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
 
+myStartupHook :: X ()
 myStartupHook    = do
       setWMName "LG3D"
       windows $ W.greedyView startupWorkspace
@@ -186,6 +212,7 @@ myFocusFollowsMouse = True
   as well.
 -}
 
+myWorkspaces :: [String]
 myWorkspaces =
   [
     "1:Term",  "2:Hub", "3:Mail",
@@ -194,14 +221,15 @@ myWorkspaces =
     "0:VM",    "-:Extr1", "=:Extr2"
   ]
 
+startupWorkspace :: String
 startupWorkspace = "5:Dev"  -- which workspace do you want to be on after launch?
 
 -- NamedScratchpad Utilities
 scratchpads :: NamedScratchpads
 scratchpads = [
     -- run htop in terminal
-    NS "htop" (myTerminal <> " -T htop --class htop -e htop") (title =? "htop") defaultFloating 
-    , NS "spotify" "spotify" (title =? "Spotify") defaultFloating 
+    NS "htop" (myTerminal <> " -T htop --class htop -e htop") (title =? "htop") defaultFloating
+    , NS "spotify" "spotify" (title =? "Spotify") defaultFloating
     , NS "qalculate" "qalculate" (title =? "Qalculate!") defaultFloating
     , NS "gnote" "gnote" (title =? "Gnote") defaultFloating
     , NS "notes" "gvim --role notes ~/notes/notes.txt" (role =? "notes") nonFloating
@@ -226,7 +254,7 @@ scratchpads = [
 -- appear if there is more than one visible window.
 -- "avoidStruts" modifier makes it so that the layout provides
 -- space for the status bar at the top of the screen.
-defaultLayouts = avoidStruts (
+defaultLayouts = layoutHints $ avoidStruts (
   -- ResizableTall layout has a large master window on the left,
   -- and remaining windows tile on the right. By default each area
   -- takes up half the screen, but you can resize using "super-h" and
@@ -261,6 +289,7 @@ defaultLayouts = avoidStruts (
   )
   ||| noBorders (fullscreenFull Full)
 
+tabConfig :: Theme
 tabConfig = def {
   activeBorderColor = "#7C7C7C",
   activeTextColor = "#CEFFAC",
@@ -289,7 +318,7 @@ tabConfig = def {
 -- master area, and then use this ThreeColMid layout to make the panels
 -- tile to the left and right of the image. If you use GIMP 2.8, you
 -- can use single-window mode and avoid this issue.
-gimpLayout = smartBorders(avoidStruts(ThreeColMid 1 (3/100) (3/4)))
+gimpLayout = smartBorders (avoidStruts (ThreeColMid 1 (3/100) (3/4)))
 
 -- Here we combine our default layouts with our specific, workspace-locked
 -- layouts.
@@ -298,23 +327,24 @@ myLayouts =
   -- onWorkspace "9:Pix" gimpLayout $
   defaultLayouts
 
-myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList 
+myMouseBindings :: XConfig l -> M.Map (KeyMask, Button) (Window -> X ())
+myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
   [
     -- mod-button1, Set the window to floating mode and move by dragging
     ((modMask, button1),
-     (\w -> focus w >> mouseMoveWindow w >> afterDrag (snapMagicMove (Just 50) (Just 50) w)))
+     \w -> focus w >> mouseMoveWindow w >> afterDrag (snapMagicMove (Just 50) (Just 50) w))
 
     -- mod-button1, Set the window to floating mode and resize by dragging
     , ((modMask .|. shiftMask, button1),
-       (\w -> focus w >> Flex.mouseResizeWindow w >> afterDrag (snapMagicResize [L,R,U,D] (Just 50) (Just 50) w)))
+       \w -> focus w >> Flex.mouseResizeWindow w >> afterDrag (snapMagicResize [L,R,U,D] (Just 50) (Just 50) w))
 
     -- mod-button2, Raise the window to the top of the stack
     , ((modMask, button2),
-       (\w -> focus w >> windows W.swapMaster))
+       \w -> focus w >> windows W.swapMaster)
 
     -- mod-button3, Set the window to floating mode and resize by dragging
     , ((modMask, button3),
-       (\w -> focus w >> mouseResizeWindow w >> afterDrag (snapMagicResize [L,R,U,D] (Just 50) (Just 50) w)))
+       \w -> focus w >> mouseResizeWindow w >> afterDrag (snapMagicResize [L,R,U,D] (Just 50) (Just 50) w))
 
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
   ]
@@ -343,7 +373,8 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
   the output.
 -}
 
-myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
+myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
+myKeys conf = M.fromList $
   [
     ((myModMask, xK_b), sendMessage ToggleStruts)
     , ((myModMask, xK_a), sendMessage MirrorShrink)
@@ -534,7 +565,7 @@ myKeys conf@(XConfig { XMonad.modMask = myModMask}) = M.fromList $
   -- TODO: update this binding with avoidStruts, ((myModMask, xK_b),
 
   -- Quit xmonad.
-    , ((mySecModMask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
+    , ((mySecModMask .|. shiftMask, xK_q), io exitSuccess)
 
   -- Logout utility
     , ((myModMask .|. shiftMask, xK_q), spawn "byebye")
@@ -551,7 +582,7 @@ capitalize []   = []
 capitalize (x:xs) = toUpper x : xs
 
 isClass :: String -> Query Bool
-isClass s = className =? s <||> className =? (capitalize s)
+isClass s = className =? s <||> className =? capitalize s
     -- tried to chain properties for group navigation
     -- where
     --   nextMatchWithThis2 :: (Eq a , Eq b) => XMonad.Actions.GroupNavigation.Direction -> Query a -> Query b -> X ()
@@ -623,12 +654,13 @@ myManagementHooks = [
   , (className =? "Variety") <&&> (stringProperty "WM_NAME" =? "Variety Images" ) --> (hasBorder False >> doFloat)
   , (className =? "Variety") <&&> (stringProperty "WM_NAME" =? "Variety History" ) --> (hasBorder False >> doFloat)
   , (className =? "Variety") <&&> (stringProperty "WM_NAME" =? "Variety Recent Downloads" ) --> (hasBorder False >> doFloat)
-  , (className =? "Rhythmbox") <&&> ((stringProperty "_GTK_WINDOW_OBJECT_PATH") =? "/org/gnome/Rhythmbox3/window/2" ) --> (hasBorder False >> doFloat)
+  , (className =? "Rhythmbox") <&&> (stringProperty "_GTK_WINDOW_OBJECT_PATH" =? "/org/gnome/Rhythmbox3/window/2" ) --> (hasBorder False >> doFloat)
   -- This is for the Rhythmbox small window feature
   -- Try to always raise the stalonetray window
   ] where viewShift = doF . liftM2 (.) W.greedyView W.shift
 
 
+myManageHook :: ManageHook
 myManageHook = manageDocks
          <+> composeAll myManagementHooks
          <+> namedScratchpadManageHook scratchpads
@@ -648,6 +680,7 @@ myManageHook = manageDocks
 -- use the numpad or the top-row number keys. And, we also
 -- use them to figure out where to go when the user
 -- uses the arrow keys.
+numPadKeys :: [KeySym]
 numPadKeys =
   [
     xK_KP_End, xK_KP_Down, xK_KP_Page_Down
@@ -656,6 +689,7 @@ numPadKeys =
     , xK_KP_Insert, xK_KP_Delete, xK_KP_Enter
   ]
 
+numKeys :: [KeySym]
 numKeys =
   [
     xK_1, xK_2, xK_3
@@ -669,6 +703,7 @@ numKeys =
 -- that we are telling xmonad how to navigate workspaces,
 -- how to send windows to different workspaces,
 -- and what keys to use to change which monitor is focused.
+workSpaceKeys :: [((KeyMask, KeySym), X ())]
 workSpaceKeys =
   [
     ((m .|. myModMask, k), windows $ f i)
@@ -694,8 +729,9 @@ workSpaceKeys =
   content into it via the logHook.
 -}
 
+main :: IO ()
 main = do
-  xmonad . withSB myStatusBar . docks . addEwmhWorkspaceSort (pure myFliter) . ewmhFullscreen . ewmh $ defaults
+  xmonad . docks . addEwmhWorkspaceSort (pure myFliter) . ewmhFullscreen . ewmh . withSB myStatusBar $ defaults
   -- xmprocess <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
   -- handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook <+> Bars.dynStatusBarEventHook barCreator barDestoyer,
   -- logHook            = myLogHook {- xmprocess -}
@@ -708,7 +744,7 @@ myStatusBar = statusBarProp "xmobar ~/.config/xmonad/xmobarrc" $ colorCopies myP
 
 -- colorCopies colors the workspaces with copied windows a different color
 colorCopies :: PP -> X PP
-colorCopies = copiesPP $ (xmobarColor myCopiedWSColor myAltBackGroundWSColor) . clickable 
+colorCopies = copiesPP $ xmobarColor myCopiedWSColor myAltBackGroundWSColor . clickable
 
 myPP :: PP
 myPP =  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP {
@@ -720,10 +756,10 @@ myPP =  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP {
           ppHidden = clickable,
           ppExtras = [nspActive' scratchpads showActive showInactive]
           }
-      where 
+      where
         showActive = xmobarColor myCurrentWSColor myBackGroundWSColor . first
         showInactive = xmobarColor myVisibleWSColor myBackGroundWSColor . first
-        first (x:_) = x:[]
+        first (x:_) = [x]
         first []  = "_"
 
 
@@ -766,12 +802,13 @@ xmobarEscape = concatMap doubleLts
 replaceSymbol :: Char -> String
 replaceSymbol '-' = "minus"
 replaceSymbol '=' = "equal"
-replaceSymbol x   = x:[]
+replaceSymbol x   = [x]
 
 clickable :: String -> String
 clickable = click . xmobarEscape
-  where click l@(x:xs) = "<action=`xdotool key alt+" ++ replaceSymbol x ++ "` button=1>" ++ l ++ "</action>"
-  
+  where click l@(x:_) = "<action=`xdotool key alt+" ++ replaceSymbol x ++ "` button=1>" ++ l ++ "</action>"
+        click []      = []
+
 clickTitle :: (String, String) -> String
 clickTitle (original, short) = "<action=`echo \"" ++ original ++ "\" | dzen2 -p 3 -h '23' -e 'button1=exit:0' -bg '" ++ myBackGroundWSColor ++"' -fg '" ++ myTitleColor ++ "' -fn 'xft:DejaVu Sans  Mono:size=11:bold:antialias=true'`>" ++ short ++ "</action>"
 

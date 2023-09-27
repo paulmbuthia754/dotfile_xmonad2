@@ -7,23 +7,28 @@
 # Edit the following constants and then rename this script to ~/.xmonad/build
 
 # The directory holding your source code and stack.yaml file:
-SRC_DIR=~/.config/xmonad
+SRC_DIR=$HOME/.config/xmonad
 
 # The name of the executable produced by stack.  This comes from the
 # executable section of your *.cabal or package.yaml file.
 EXE_NAME=my-xmonad
+EXE_XMOBAR=xmobar
 
 ################################################################################
 
 
 
 # Unset STACK_YAML, to ensure that $SRC_DIR/stack.yaml is used.
-# unset STACK_YAML
+unset STACK_YAML
+FAIL=0
 
 # Do the build
 cd $SRC_DIR
 
-stack --stack-yaml $SRC_DIR/stack.yaml build
+stack build 2>.log || FAIL=1
+stack install $EXE_NAME 2>.log || FAIL=3
+stack install $EXE_XMOBAR 2>.log || FAIL=3
 
 # Create a hard link at the requested destination, replacing any existing one.
-ln -f -T $(stack exec -- which $EXE_NAME) $1
+ln -f -T $(stack exec -- which $EXE_NAME) $1 2>.log || FAIL=2
+exit $FAIL

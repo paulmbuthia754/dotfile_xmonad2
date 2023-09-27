@@ -31,4 +31,9 @@ executables:
     language: GHC2021
     dependencies:
       - xmonad
-      - X11 >= 1.10
+      - X11 
+  xmobar:
+    main: xmobar.hs
+    language: GHC2021
+    dependencies:
+      - xmobar

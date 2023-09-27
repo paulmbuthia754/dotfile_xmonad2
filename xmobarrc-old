@@ -16,10 +16,10 @@ Config {
   -- Set font and default foreground/background colors. Note that
   -- the height of xmobar is controlled by the font you use.
 
-  font = "xft:Ubuntu Nerd Font:weight=bold:pixelsize=13:antialias=true:hinting=true",
-  additionalFonts = [ "xft:mononoki Nerd Font:pixelsize=13:antialias=true:hinting=true",
-                      "xft:Font Awesome 6 Free:weight=bold:pixelsize=13", 
-                      "xft:Font Awesome 6 Brands:weight=bold:pixelsize=13" 
+  font = "Ubuntu Nerd Font Bold 10",
+  additionalFonts = [ "mononoki Nerd Font 10",
+                      "Font Awesome 6 Free Bold 9",
+                      "Font Awesome 6 Brands Bold 9"
                     ],
   bgColor = "black",
   fgColor = "grey",
