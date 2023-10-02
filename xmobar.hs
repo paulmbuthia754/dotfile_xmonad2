@@ -19,7 +19,7 @@ config = defaultConfig {
     -- of your screen to make it play nicely with stalonetray, which we
     -- want to be taking up the remainer of the space on the right side
     -- of your screen.
-    position = TopW L 82,
+    position = TopW L 70,
 
     -- general behaviour
     lowerOnStart =   False,

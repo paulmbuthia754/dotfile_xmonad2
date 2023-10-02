@@ -16,7 +16,7 @@ executable xmobar
   hs-source-dirs:
       lib
       ./
-  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -j -dynamic -threaded
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -threaded
   build-depends:
       X11
     , base
@@ -44,7 +44,7 @@ executable xmonad
   hs-source-dirs:
       lib
       ./
-  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -j -dynamic -threaded
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -threaded
   build-depends:
       X11
     , base
