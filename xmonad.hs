@@ -142,8 +142,8 @@ myFileManager :: String
 myFileManager        = "nemo"
 myFileSearch :: String
 myFileSearch         = "fsearch"
-myFont :: String
-myFont               = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
+-- myFont :: String
+-- myFont = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
 
 myStartupHook :: X ()
 myStartupHook    = do
@@ -254,17 +254,19 @@ scratchpads = [
 -- appear if there is more than one visible window.
 -- "avoidStruts" modifier makes it so that the layout provides
 -- space for the status bar at the top of the screen.
-defaultLayouts = layoutHints $ avoidStruts (
+defaultLayouts = avoidStruts (
   -- ResizableTall layout has a large master window on the left,
   -- and remaining windows tile on the right. By default each area
   -- takes up half the screen, but you can resize using "super-h" and
   -- "super-l".
   ResizableTall 1 (3/100) (1/2) []
+  ||| layoutHints (ResizableTall 1 (3/100) (1/2) [])
 
   -- Mirrored variation of ResizableTall. In this layout, the large
   -- master window is at the top, and remaining windows tile at the
   -- bottom of the screen. Can be resized as described above.
   ||| Mirror (ResizableTall 1 (3/100) (1/2) [])
+  ||| layoutHints (Mirror (ResizableTall 1 (3/100) (1/2) []))
 
   -- Full layout makes every window full screen. When you toggle the
   -- active window, it will bring the active window to the front.
@@ -279,6 +281,7 @@ defaultLayouts = layoutHints $ avoidStruts (
   -- Circle layout places the master window in the center of the screen.
   -- Remaining windows appear in a circle around it
   ||| Circle
+  -- ||| layoutHintsToCenter Circle
 
   -- Grid layout tries to equally distribute windows in the available
   -- space, increasing the number of columns and rows as necessary.

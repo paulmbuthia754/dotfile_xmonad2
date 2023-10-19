@@ -6,10 +6,10 @@ import Xmobar
 
 config :: Config
 config = defaultConfig {
-    font = "Ubuntu Nerd Font Bold 10",
-    additionalFonts = [ "mononoki Nerd Font 10",
-                        "Font Awesome 6 Free Bold 9",
-                        "Font Awesome 6 Brands Bold 9"
+    font = "Ubuntu Nerd Font Bold 12",
+    additionalFonts = [ "mononoki Nerd Font 12",
+                        "Font Awesome 6 Free Bold 11",
+                        "Font Awesome 6 Brands Bold 11"
                         ],
     bgColor = "black",
     fgColor = "grey",
@@ -19,7 +19,7 @@ config = defaultConfig {
     -- of your screen to make it play nicely with stalonetray, which we
     -- want to be taking up the remainer of the space on the right side
     -- of your screen.
-    position = TopW L 70,
+    position = TopSize L 70 20,
 
     -- general behaviour
     lowerOnStart =   False,
