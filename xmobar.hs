@@ -45,7 +45,7 @@ config = defaultConfig {
         "--high","red"
         ] 50,
         Run $ DiskU [
-            ("/",                   "<fn=2>\xf390</fn>/:<usedp>% "),
+            ("/",                   "<fn=2>\xf390</fn>:<usedp>% "),
             ("/home",               "<fn=2>\xf015</fn>:<usedp>% "),
             ("/media/paul/Media",   "<fn=2>\xf008</fn>:<usedp>% ")
             ]
