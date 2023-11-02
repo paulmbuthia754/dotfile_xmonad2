@@ -692,6 +692,7 @@ numPadKeys =
     , xK_KP_Insert, xK_KP_Delete, xK_KP_Enter
   ]
 
+
 numKeys :: [KeySym]
 numKeys =
   [

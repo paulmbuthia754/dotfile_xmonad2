@@ -6,10 +6,11 @@ import Xmobar
 
 config :: Config
 config = defaultConfig {
-    font = "Ubuntu Nerd Font Bold 12",
-    additionalFonts = [ "mononoki Nerd Font 12",
-                        "Font Awesome 6 Free Bold 11",
-                        "Font Awesome 6 Brands Bold 11"
+    font = "Ubuntu Nerd Font Bold 10",
+    additionalFonts = [ "mononoki Nerd Font 10",
+                        "Font Awesome 6 Free Bold 9",
+                        "Font Awesome 6 Brands Bold 9",
+                        "DejaVu Sans Mono Bold 9"
                         ],
     bgColor = "black",
     fgColor = "grey",
@@ -19,7 +20,7 @@ config = defaultConfig {
     -- of your screen to make it play nicely with stalonetray, which we
     -- want to be taking up the remainer of the space on the right side
     -- of your screen.
-    position = TopSize L 70 20,
+    position = TopW L 84,
 
     -- general behaviour
     lowerOnStart =   False,
@@ -38,10 +39,10 @@ config = defaultConfig {
         -- If it's above 50%, we consider it high usage and make it red.  
         Run $ Cpu [
         "-p", "2",
-        "--template", "<fn=2>\xf2db</fn>: <total>%",
+        "--template", "<fn=2>\xf2db</fn>: <fn=4><total>%</fn>",
         "-H","50",
         "--high","red"
-        ] 20,
+        ] 50,
         Run $ DiskU [
             ("/",                   "<fn=2>\xf390</fn>/:<usedp>% "),
             ("/home",               "<fn=2>\xf015</fn>:<usedp>% "),
@@ -57,7 +58,7 @@ config = defaultConfig {
         ] 10,
 
         -- Date formatting
-        Run $ Date "%a %b %_d %l:%M" "date" 10,
+        Run $ Date "%R  %a %0d-%0m" "date" 10,
 
         -- Echos a "battery" icon in front of the pacman updates.
         Run $ Com "echo" ["<fn=2>\xf242</fn>"] "baticon" 3600,
@@ -95,12 +96,12 @@ config = defaultConfig {
         Run $ Com "echo" ["<fn=2>\xf144</fn>"] "playicon" 3600,
         Run $ Com "/bin/bash" ["-c", "~/bin/speaker-color #e6744c"] "speaker-color" 10,
 
-        Run $ Volume "default" "Master" [
+        Run $ Alsa "default" "Master" [
             "-t", "<fn=2>\xf028</fn>: <volume>% <status>",
             "--",
             "--on", "",
             "--off", "[M]"
-        ] 10,
+        ],
 
         -- Trayer Padding
         Run $ Com "~/.xmonad/trayer-padding-icon.sh" [] "trayerpad" 100,
@@ -109,7 +110,7 @@ config = defaultConfig {
         -- get the information that xmonad is sending it for display.
         -- Run UnsafeStdinReader,
         Run $ UnsafeNamedXPropertyLog "_TRAYPAD" "pad",
-        Run $ UnsafeXMonadLog
+        Run UnsafeXMonadLog
     ],
 
     -- Separator character used to wrape variables in the xmobar template 
@@ -125,7 +126,7 @@ config = defaultConfig {
 
 
 
-    template = "<action=`xdotool key alt+n`><icon=xmonad-16.xpm/></action> %UnsafeXMonadLog% }{ %disku% | %baticon% %battery% | %cpu% | %memory% | <action=`speaker-toggle`><fc=%speaker-color%>%default:Master% </fc></action> | <action=`my-player-next`><fc=#6c97d4> %playicon% %myplayer%</fc> </action> | <fc=#e6744c><action=`gnome-calendar`>%date%</action></fc>"
+    template = "<action=`xdotool key alt+n`><icon=xmonad-16.xpm/></action> %UnsafeXMonadLog% }{<fc=#e6744c><action=`gnome-calendar`>%date%</action></fc> | %baticon% %battery% | %cpu% | %memory% | %disku% | <action=`speaker-toggle`><fc=%speaker-color%>%alsa:default:Master% </fc></action> | <action=`my-player-next`><fc=#6c97d4> %playicon% %myplayer%</fc> </action>"
     }
 
 main :: IO ()

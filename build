@@ -29,4 +29,7 @@ stack build 2>.log || FAIL=1
 
 # Create a hard link at the requested destination, replacing any existing one.
 ln -f -T $(stack exec -- which $EXE_NAME) $1 2>.log || FAIL=2
+ln -f -T $(stack exec -- which $EXE_XMOBAR) $(which $EXE_XMOBAR) 2>>.log || FAIL=3
+rm ./lib/XMonad/Actions/*.hi ./lib/XMonad/Actions/*.o 2>/dev/null
+
 exit $FAIL
