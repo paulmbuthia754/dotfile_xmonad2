@@ -10,7 +10,8 @@ config = defaultConfig {
     additionalFonts = [ "mononoki Nerd Font 10",
                         "Font Awesome 6 Free Bold 9",
                         "Font Awesome 6 Brands Bold 9",
-                        "DejaVu Sans Mono Bold 9"
+                        "DejaVu Sans Mono Bold 9",
+                        "Ubuntu Mono Bold 11"
                         ],
     bgColor = "black",
     fgColor = "grey",
@@ -39,7 +40,7 @@ config = defaultConfig {
         -- If it's above 50%, we consider it high usage and make it red.  
         Run $ Cpu [
         "-p", "2",
-        "--template", "<fn=2>\xf2db</fn>: <fn=4><total>%</fn>",
+        "--template", "<fn=2>\xf2db</fn>: <fn=5><total>%</fn>",
         "-H","50",
         "--high","red"
         ] 50,
@@ -126,7 +127,7 @@ config = defaultConfig {
 
 
 
-    template = "<action=`xdotool key alt+n`><icon=xmonad-16.xpm/></action> %UnsafeXMonadLog% }{<fc=#e6744c><action=`gnome-calendar`>%date%</action></fc> | %baticon% %battery% | %cpu% | %memory% | %disku% | <action=`speaker-toggle`><fc=%speaker-color%>%alsa:default:Master% </fc></action> | <action=`my-player-next`><fc=#6c97d4> %playicon% %myplayer%</fc> </action>"
+    template = "<action=`xdotool key alt+n`><icon=xmonad-16.xpm/></action> %UnsafeXMonadLog% }{<fc=#e6744c><action=`gnome-calendar`>%date%</action></fc>   %baticon% %battery% | %cpu% | %memory% | %disku% | <action=`speaker-toggle`><fc=%speaker-color%>%alsa:default:Master% </fc></action> | <action=`my-player-next`><fc=#6c97d4> %playicon% %myplayer%</fc> </action>"
     }
 
 main :: IO ()
