@@ -127,7 +127,7 @@ config = defaultConfig {
 
 
 
-    template = "<action=`xdotool key alt+n`><icon=xmonad-16.xpm/></action> %UnsafeXMonadLog% }{<fc=#3c76ee><action=`gnome-calendar`>%date%</action></fc>   %baticon% %battery% | %cpu% | %memory% | %disku% | <action=`speaker-toggle`><fc=%speaker-color%>%alsa:default:Master% </fc></action> | <action=`my-player-next`><fc=#6c97d4> %playicon% %myplayer%</fc> </action>"
+    template = "<action=`xdotool key alt+n`><icon=xmonad-16.xpm/></action> %UnsafeXMonadLog% }{<fc=#eed77c><action=`gnome-calendar`>%date%</action></fc>   %baticon% %battery% | %cpu% | %memory% | %disku% | <action=`speaker-toggle`><fc=%speaker-color%>%alsa:default:Master% </fc></action> | <action=`my-player-next`><fc=#6c97d4> %playicon% %myplayer%</fc> </action>"
     }
 
 main :: IO ()
