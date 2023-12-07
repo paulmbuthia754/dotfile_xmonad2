@@ -57,6 +57,7 @@ import           XMonad.Util.Loggers.NamedScratchpad
 import           XMonad.Util.WorkspaceCompare
 import           XMonad.Util.Cursor
 import           XMonad.Util.Hacks
+import           XMonad.Util.EZConfig
 import qualified Data.Map                          as M
 -- import qualified Data.List                         as L
 -- import           Data.Ratio                        ((%))
@@ -81,7 +82,7 @@ myBorderWidth       :: Dimension
 myBorderWidth        = 1              -- width of border around windows
 
 myTerminal, myBrowser, myIMRosterTitle :: String
-myTerminal           = "kitty"   -- which terminal software to use
+myTerminal           = "kitty --single-instance"   -- which terminal software to use
 myBrowser            = "firefox"
 myIMRosterTitle      = "Buddy List"   -- title of roster on IM workspace
                                       -- use "Buddy List" for Pidgin, but
@@ -169,19 +170,19 @@ myStartupHook    = do
       spawnOnce "stalonetray"
       spawnOnce "nm-applet"
       spawnOnce "classicmenu-indicator"
-      spawnOnce "pulseaudio --start"
       spawnOnce "variety"
       spawnOnce "xfce4-power-manager"
       spawnOnce "/usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd"
       spawnOnce "indicator-kdeconnect"
+      spawnOnce "indicator-cpufreq"
       spawnOnce "indicator-multiload"
       spawnOnce "udiskie -q -s -f nemo &"
       spawnOnce "eval \"$(fasd --init auto)"
+      spawnOnce "pulseaudio --start"
       spawnOnce "pasystray"
       spawnOnce "my-player-set"
       spawnOnce "sleep 5; pactl load-module module-bluetooth-discover"
       spawnOnce "blueman-applet"
-      spawnOnce "indicator-cpufreq"
       spawnOnce "psensor"
       spawnOnce "kdeconnect-indicator"
       -- spawnOnce "cadence --minimized"
@@ -300,7 +301,7 @@ tabConfig = def {
   inactiveBorderColor = "#7C7C7C",
   inactiveTextColor= "#EEEEEE",
   inactiveColor = "#111111"
-                         }
+  }
 -- Here we define some layouts which will be assigned to specific
 -- workspaces based on the functionality of that workspace.
 
@@ -376,8 +377,8 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
   the output.
 -}
 
-myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf = M.fromList $
+myKeys :: XConfig layout -> [((KeyMask, KeySym), (X ()))]
+myKeys conf =
   [
     ((myModMask, xK_b), sendMessage ToggleStruts)
     , ((myModMask, xK_a), sendMessage MirrorShrink)
@@ -500,7 +501,7 @@ myKeys conf = M.fromList $
     , ((myModMask, xK_space), sendMessage NextLayout)
 
     --  Reset the layouts on the current workspace to default.
-    , ((myModMask .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
+    , ((myModMask .|. shiftMask, xK_space), sendMessage FirstLayout)
 
     -- Resize viewed windows to the correct size.
     , ((mySecModMask, xK_n), refresh)
@@ -767,36 +768,39 @@ myPP =  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP {
         first []  = "_"
 
 
-defaults = def {
-    -- simple stuff
-    terminal           = myTerminal,
-    focusFollowsMouse  = myFocusFollowsMouse,
-    borderWidth        = myBorderWidth,
-    modMask            = myModMask,
-    workspaces         = myWorkspaces,
-    normalBorderColor  = myNormalBorderColor,
-    focusedBorderColor = myFocusedBorderColor,
-    -- font               = myFont,
+defaults = defaults' `additionalKeys` (myKeys defaults')
+  where
+    defaults' = def {
+      -- simple stuff
+      terminal           = myTerminal,
+      focusFollowsMouse  = myFocusFollowsMouse,
+      borderWidth        = myBorderWidth,
+      modMask            = myModMask,
+      workspaces         = myWorkspaces,
+      normalBorderColor  = myNormalBorderColor,
+      focusedBorderColor = myFocusedBorderColor,
+      -- font               = myFont,
 
-    -- key bindings
-    keys               = myKeys,
-    mouseBindings      = myMouseBindings,
+      -- key bindings
 
-    -- hooks, layouts
-    layoutHook         = smartBorders myLayouts,
-    -- manageHook         = manageDocks <+>
-    --                      namedScratchpadManageHook scratchpads <+>
-    --                      myManageHook <+> 
-    --                      manageHook def,
-    manageHook         = myManageHook
-                         <+> manageHook def,
-    handleEventHook    = fullscreenEventHook <+>
-                         trayPaddingXmobarEventHook (className =? "stalonetray") "_TRAYPAD" <+>
-                         trayAbovePanelEventHook (className =? "stalonetray") (className =? "xmobar") <+>
-                         nspTrackHook scratchpads <+>
-                         handleEventHook def,
-    startupHook        = myStartupHook
-}
+      -- keys               = myKeys,
+      mouseBindings      = myMouseBindings,
+
+      -- hooks, layouts
+      layoutHook         = smartBorders myLayouts,
+      -- manageHook         = manageDocks <+>
+      --                      namedScratchpadManageHook scratchpads <+>
+      --                      myManageHook <+>
+      --                      manageHook def,
+      manageHook         = myManageHook
+                          <+> manageHook def,
+      handleEventHook    = fullscreenEventHook <+>
+                          trayPaddingXmobarEventHook (className =? "stalonetray") "_TRAYPAD" <+>
+                          trayAbovePanelEventHook (className =? "stalonetray") (className =? "xmobar") <+>
+                          nspTrackHook scratchpads <+>
+                          handleEventHook def,
+      startupHook        = myStartupHook
+    }
 
 xmobarEscape :: String -> String
 xmobarEscape = concatMap doubleLts

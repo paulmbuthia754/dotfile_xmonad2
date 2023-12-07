@@ -13,23 +13,30 @@ SRC_DIR=$HOME/.config/xmonad
 # executable section of your *.cabal or package.yaml file.
 EXE_NAME=xmonad
 EXE_XMOBAR=xmobar
+STACK_EXE=~paul/.ghcup/bin/stack
 
 ################################################################################
 
 
 
 # Unset STACK_YAML, to ensure that $SRC_DIR/stack.yaml is used.
-unset STACK_YAML
+# unset STACK_YAML
 FAIL=0
 
 # Do the build
 cd $SRC_DIR
 
-stack build 2>.log || FAIL=1
+rm .log
+$STACK_EXE build 2>>.log || FAIL=1
 
 # Create a hard link at the requested destination, replacing any existing one.
-ln -f -T $(stack exec -- which $EXE_NAME) $1 2>.log || FAIL=2
-ln -f -T $(stack exec -- which $EXE_XMOBAR) $(which $EXE_XMOBAR) 2>>.log || FAIL=3
+ln -f -T $($STACK_EXE exec -- which $EXE_NAME) $1 2>>.log || FAIL=2
+
+if [ $($STACK_EXE exec -- which $EXE_XMOBAR) != $(which $EXE_XMOBAR) ]; then
+    ln -f -T $($STACK_EXE exec -- which $EXE_XMOBAR) $(which $EXE_XMOBAR) 2>>.log || FAIL=3
+    killall $EXE_XMOBAR
+fi
+
 rm ./lib/XMonad/Actions/*.hi ./lib/XMonad/Actions/*.o 2>/dev/null
 
 exit $FAIL

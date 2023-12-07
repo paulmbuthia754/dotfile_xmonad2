@@ -34,10 +34,10 @@ config = defaultConfig {
     iconRoot    = ".config/xmonad/xpm",
 
     -- list of commands which gather information about your system for
-    -- presentation in the bar. 
-    commands = [ 
-        -- Gather and format CPU usage information. 
-        -- If it's above 50%, we consider it high usage and make it red.  
+    -- presentation in the bar.
+    commands = [
+        -- Gather and format CPU usage information.
+        -- If it's above 50%, we consider it high usage and make it red.
         Run $ Cpu [
         "-p", "2",
         "--template", "<fn=2>\xf2db</fn>: <fn=5><total>%</fn>",
@@ -90,15 +90,16 @@ config = defaultConfig {
 
         -- To get volume information, we run a custom bash script.
         -- This is because the built-in volume support in xmobar is disabled
-        -- in Debian and derivatives like Ubuntu. 
+        -- in Debian and derivatives like Ubuntu.
         -- Run Com "/bin/bash" ["-c", "~/.config/xmonad/get-volume"] "myvolume" 10,
         -- Get mpris player
         Run $ Com "/bin/bash" ["-c", "~/bin/my-player-get"] "myplayer" 10,
-        Run $ Com "echo" ["<fn=2>\xf144</fn>"] "playicon" 3600,
+        Run $ Com "echo" [fn2 "\xf144"] "playicon" 3600,
         Run $ Com "/bin/bash" ["-c", "~/bin/speaker-color #e6744c"] "speaker-color" 10,
 
         Run $ Alsa "default" "Master" [
-            "-t", "<fn=2>\xf028</fn>: <volume>% <status>",
+            -- "-t", "<fn=2>\xf028</fn>: <volume>% <status>",
+            "-t", fn2 "\xf028" <> ": <volume>% <status>",
             "--",
             "--on", "",
             "--off", "[M]"
@@ -114,7 +115,7 @@ config = defaultConfig {
         Run UnsafeXMonadLog
     ],
 
-    -- Separator character used to wrape variables in the xmobar template 
+    -- Separator character used to wrape variables in the xmobar template
     sepChar = "%",
 
     -- Alignment separater characer used in the xmobar template. Everything
@@ -127,8 +128,90 @@ config = defaultConfig {
 
 
 
-    template = "<action=`xdotool key alt+n`><icon=xmonad-16.xpm/></action> %UnsafeXMonadLog% }{<fc=#eed77c><action=`gnome-calendar`>%date%</action></fc>   %baticon% %battery% | %cpu% | %memory% | %disku% | <action=`speaker-toggle`><fc=%speaker-color%>%alsa:default:Master% </fc></action> | <action=`my-player-next`><fc=#6c97d4> %playicon% %myplayer%</fc> </action>"
+    -- template = "<action=`xdotool key alt+n`><icon=xmonad-16.xpm/></action> %UnsafeXMonadLog% }{<fc=#eed77c><action=`gnome-calendar`>%date%</action></fc>   %baticon% %battery% | %cpu% | %memory% | %disku% | <action=`speaker-toggle`><fc=%speaker-color%>%alsa:default:Master% </fc></action> | <action=`my-player-next`><fc=#6c97d4> %playicon% %myplayer%</fc> </action>"
+    template = xmonadLog `align` iconRow
     }
+    where
+        xmonadLog :: String
+        xmonadLog = xmonadIcon `sp_` arg "UnsafeXMonadLog"
+
+        iconRow :: String
+        iconRow = calender <> spaces 4 <>
+                    batt
+                    .| arg "cpu"
+                    .| arg "memory"
+                    .| sp (arg "disku")
+                    .| speaker
+                    .| player
+
+
+action :: String -> String -> String
+action command text = "<action=`" <> command <> "`>" <> text <> "</action>"
+
+fontColor :: String -> String -> String
+fontColor clr text = "<fc=" <> clr <> ">" <> text <> "</fc>"
+
+fc :: String -> String -> String
+fc = fontColor
+
+icon :: String -> String
+icon name = "<icon=" <> name <> "/>"
+
+fn :: Int -> String -> String
+fn n text = "<fn=" <> (show n) <> ">" <> text <> "</fn>"
+
+fn1, fn2, fn3, fn4, fn5 :: String -> String
+fn1 = fn 1
+fn2 = fn 2
+fn3 = fn 3
+fn4 = fn 4
+fn5 = fn 5
+
+argument :: String -> String -> String
+argument sepChar' text = sepChar' <> text <> sepChar'
+
+alignSeperator :: String -> String -> String -> String
+alignSeperator sep l r = l `sp_` sep `sp_` r
+
+align :: String -> String -> String
+align = alignSeperator $ alignSep config
+
+arg :: String -> String
+arg = argument $ sepChar config
+
+space :: String -> String
+space text = " " <> text
+
+spaces :: Int -> String
+spaces n = replicate n ' '
+
+sp :: String -> String
+sp = space
+
+sp_ :: String -> String -> String
+sp_ l r = l <> sp r
+
+(.|), bar :: String -> String -> String
+bar l r = l `sp_` "|" `sp_` r
+(.|) = bar
+
+infixl 5 .|
+
+xmonadIcon :: String
+xmonadIcon = action "xdotool key alt+n" $ icon "xmonad-16.xpm"
+
+calender :: String
+calender = action "gnome-calender" $ fontColor "#eed77c" $ arg "date"
+
+speaker :: String
+speaker = action "speaker-toggle" $ fontColor (arg "speaker-color") $ arg "alsa:default:Master"
+
+player :: String
+player = action "my-player-next" $ fc "#6c97d4" $ arg "playicon" <> " " <> arg "myplayer"
+
+batt :: String
+batt = arg "baticon" `sp_` arg "battery"
+
 
 main :: IO ()
 main = configFromArgs config >>= xmobar
