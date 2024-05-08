@@ -1,0 +1,203 @@
+
+Warning: Building several executables with the same name: my-xmonad:xmobar, xmobar:xmobar. Only one
+         of them will be available via stack exec or locally installed.
+xmobar-0.47.1: unregistering
+clock    > configure
+clock    > Configuring clock-0.8.4...
+clock    > build with ghc-9.4.8
+clock    > Preprocessing library for clock-0.8.4..
+clock    > Building library for clock-0.8.4..
+clock    > [1 of 2] Compiling System.Clock
+clock    > [2 of 2] Compiling System.Clock.Seconds
+clock    > copy/register
+clock    > Installing library in /home/paul/.stack/snapshots/x86_64-linux-tinfo6/b580226a5834c213eef04425e427a7c87a8778e4b7c785a0009b016c91065c47/9.4.8/lib/x86_64-linux-ghc-9.4.8/clock-0.8.4-G8SzK6hYDaQ8NS4QguXJqj
+clock    > Registering library for clock-0.8.4..
+extra    > configure
+extra    > Configuring extra-1.7.14...
+extra    > build with ghc-9.4.8
+extra    > Preprocessing library for extra-1.7.14..
+extra    > Building library for extra-1.7.14..
+extra    > [ 1 of 22] Compiling Data.IORef.Extra
+extra    > [ 2 of 22] Compiling Data.Monoid.Extra
+extra    > [ 3 of 22] Compiling Data.Tuple.Extra
+extra    > [ 4 of 22] Compiling Data.Typeable.Extra
+extra    > [ 5 of 22] Compiling Numeric.Extra
+extra    > [ 6 of 22] Compiling Partial
+extra    > [ 7 of 22] Compiling Data.List.Extra
+extra    > [ 8 of 22] Compiling Data.Version.Extra
+extra    > [ 9 of 22] Compiling Data.List.NonEmpty.Extra
+extra    > [10 of 22] Compiling Data.Either.Extra
+extra    > [11 of 22] Compiling Control.Exception.Extra
+extra    > [12 of 22] Compiling Control.Monad.Extra
+extra    > [13 of 22] Compiling Data.Foldable.Extra
+extra    > [14 of 22] Compiling Control.Concurrent.Extra
+extra    > [15 of 22] Compiling System.Directory.Extra
+extra    > [16 of 22] Compiling System.Environment.Extra
+extra    > [17 of 22] Compiling System.IO.Extra
+extra    > [18 of 22] Compiling System.Info.Extra
+extra    > [19 of 22] Compiling System.Process.Extra
+extra    > [20 of 22] Compiling System.Time.Extra
+extra    > [21 of 22] Compiling Extra
+extra    > [22 of 22] Compiling Text.Read.Extra
+extra    > copy/register
+extra    > Installing library in /home/paul/.stack/snapshots/x86_64-linux-tinfo6/b580226a5834c213eef04425e427a7c87a8778e4b7c785a0009b016c91065c47/9.4.8/lib/x86_64-linux-ghc-9.4.8/extra-1.7.14-HYFegZmFQKx7Nk5jOiZC0n
+extra    > Registering library for extra-1.7.14..
+xmobar   > configure (lib + exe)
+xmobar   > Configuring xmobar-0.48.1...
+xmobar   > build (lib + exe) with ghc-9.4.8
+xmobar   > Preprocessing library for xmobar-0.48.1..
+xmobar   > Building library for xmobar-0.48.1..
+xmobar   > [  1 of 106] Compiling Paths_xmobar
+xmobar   > [  2 of 106] Compiling Xmobar.App.Compile
+xmobar   > [  3 of 106] Compiling Xmobar.Plugins.Monitors.Common.Types
+xmobar   > [  4 of 106] Compiling Xmobar.Plugins.Monitors.Common.Parsers
+xmobar   > [  5 of 106] Compiling Xmobar.Plugins.Monitors.Common.Output
+xmobar   > [  6 of 106] Compiling Xmobar.Plugins.Monitors.Common.Files
+xmobar   > [  7 of 106] Compiling Xmobar.Plugins.Monitors.Cpu.Common
+xmobar   > [  8 of 106] Compiling Xmobar.Plugins.Monitors.Cpu.Linux
+xmobar   > [  9 of 106] Compiling Xmobar.Plugins.Monitors.Disk.Common
+xmobar   > [ 10 of 106] Compiling Xmobar.Plugins.Monitors.Load.Common
+xmobar   > [ 11 of 106] Compiling Xmobar.Plugins.Monitors.Load.Linux
+xmobar   > [ 12 of 106] Compiling Xmobar.Plugins.Monitors.Mem.Linux
+xmobar   > [ 13 of 106] Compiling Xmobar.Plugins.Monitors.Net.Common
+xmobar   > [ 14 of 106] Compiling Xmobar.Plugins.Monitors.Net.Linux
+xmobar   > [ 15 of 106] Compiling Xmobar.Plugins.Monitors.Swap.Linux
+xmobar   > [ 16 of 106] Compiling Xmobar.Plugins.Monitors.Top.Common
+xmobar   > [ 17 of 106] Compiling Xmobar.Plugins.Monitors.Uptime.Linux
+xmobar   > [ 18 of 106] Compiling Xmobar.Run.Actions
+xmobar   > [ 19 of 106] Compiling Xmobar.Run.Timer
+xmobar   > [ 20 of 106] Compiling Xmobar.System.Environment
+xmobar   > [ 21 of 106] Compiling Xmobar.System.Kbd
+xmobar   > [ 22 of 106] Compiling Xmobar.System.Localize
+xmobar   > [ 23 of 106] Compiling Xmobar.System.Signal
+xmobar   > [ 24 of 106] Compiling Xmobar.System.DBus
+xmobar   > [ 25 of 106] Compiling Xmobar.Run.Exec
+xmobar   > [ 26 of 106] Compiling Xmobar.Plugins.StdinReader
+xmobar   > [ 27 of 106] Compiling Xmobar.Plugins.QueueReader
+xmobar   > [ 28 of 106] Compiling Xmobar.Plugins.PipeReader
+xmobar   > [ 29 of 106] Compiling Xmobar.Plugins.NotmuchMail
+xmobar   > [ 30 of 106] Compiling Xmobar.Plugins.Monitors.Common.Run
+xmobar   > [ 31 of 106] Compiling Xmobar.Plugins.Monitors.Common
+xmobar   > [ 32 of 106] Compiling Xmobar.Plugins.Monitors.Wireless
+xmobar   > [ 33 of 106] Compiling Xmobar.Plugins.Monitors.Weather
+xmobar   > [ 34 of 106] Compiling Xmobar.Plugins.Monitors.Volume
+xmobar   > [ 35 of 106] Compiling Xmobar.Plugins.Monitors.Uptime
+xmobar   > [ 36 of 106] Compiling Xmobar.Plugins.Monitors.Top.Linux
+xmobar   > [ 37 of 106] Compiling Xmobar.Plugins.Monitors.Top
+xmobar   > [ 38 of 106] Compiling Xmobar.Plugins.Monitors.ThermalZone
+xmobar   > [ 39 of 106] Compiling Xmobar.Plugins.Monitors.Thermal
+xmobar   > [ 40 of 106] Compiling Xmobar.Plugins.Monitors.Swap
+xmobar   > [ 41 of 106] Compiling Xmobar.Plugins.Monitors.Net
+xmobar   > [ 42 of 106] Compiling Xmobar.Plugins.Monitors.MultiCpu
+xmobar   > [ 43 of 106] Compiling Xmobar.Plugins.Monitors.MultiCoreTemp
+xmobar   > [ 44 of 106] Compiling Xmobar.Plugins.Monitors.Mpris
+xmobar   > [ 45 of 106] Compiling Xmobar.Plugins.Monitors.Mem
+xmobar   > [ 46 of 106] Compiling Xmobar.Plugins.Monitors.Load
+xmobar   > [ 47 of 106] Compiling Xmobar.Plugins.Monitors.K10Temp
+xmobar   > [ 48 of 106] Compiling Xmobar.Plugins.Monitors.CpuFreq
+xmobar   > [ 49 of 106] Compiling Xmobar.Plugins.Monitors.Cpu
+xmobar   > [ 50 of 106] Compiling Xmobar.Plugins.Monitors.CoreTemp
+xmobar   > [ 51 of 106] Compiling Xmobar.Plugins.Monitors.CatInt
+xmobar   > [ 52 of 106] Compiling Xmobar.Plugins.Monitors.Bright
+xmobar   > [ 53 of 106] Compiling Xmobar.Plugins.Monitors.Batt.Common
+xmobar   > [ 54 of 106] Compiling Xmobar.Plugins.Monitors.Batt.Linux
+xmobar   > [ 55 of 106] Compiling Xmobar.Plugins.Monitors.Batt
+xmobar   > [ 56 of 106] Compiling Xmobar.Plugins.Monitors.Alsa
+xmobar   > [ 57 of 106] Compiling Xmobar.Plugins.MarqueePipeReader
+xmobar   > [ 58 of 106] Compiling Xmobar.Plugins.HandleReader
+xmobar   > [ 59 of 106] Compiling Xmobar.Plugins.DateZone
+xmobar   > [ 60 of 106] Compiling Xmobar.Plugins.Date
+xmobar   > [ 61 of 106] Compiling Xmobar.Plugins.CommandReader
+xmobar   > [ 62 of 106] Compiling Xmobar.Plugins.Command
+xmobar   > [ 63 of 106] Compiling Xmobar.Plugins.BufferedPipeReader
+xmobar   > [ 64 of 106] Compiling Xmobar.System.StatFS
+xmobar   > [ 65 of 106] Compiling Xmobar.Plugins.Monitors.Disk.Linux
+xmobar   > [ 66 of 106] Compiling Xmobar.Plugins.Monitors.Disk
+xmobar   > [ 67 of 106] Compiling Xmobar.Plugins.Monitors
+xmobar   > [ 68 of 106] Compiling Xmobar.System.Utils
+xmobar   > [ 69 of 106] Compiling Xmobar.Plugins.Mail
+xmobar   > [ 70 of 106] Compiling Xmobar.Plugins.MBox
+xmobar   > [ 71 of 106] Compiling Xmobar.Text.Ansi
+xmobar   > [ 72 of 106] Compiling Xmobar.Text.Pango
+xmobar   > [ 73 of 106] Compiling Xmobar.Text.SwaybarClicks
+xmobar   > [ 74 of 106] Compiling Xmobar.X11.CairoSurface
+xmobar   > [ 75 of 106] Compiling Xmobar.X11.ColorCache
+xmobar   > [ 76 of 106] Compiling Xmobar.X11.Events
+xmobar   > [ 77 of 106] Compiling Xmobar.Plugins.XMonadLog
+xmobar   > [ 78 of 106] Compiling Xmobar.Plugins.Locks
+xmobar   > [ 79 of 106] Compiling Xmobar.Plugins.Kbd
+xmobar   > [ 80 of 106] Compiling Xmobar.Plugins.EWMH
+xmobar   > [ 81 of 106] Compiling Xmobar.Run.Runnable[boot]
+xmobar   > [ 82 of 106] Compiling Xmobar.Run.Types
+xmobar   > [ 83 of 106] Compiling Xmobar.Run.Runnable
+xmobar   > [ 84 of 106] Compiling Xmobar.Run.Template
+xmobar   > [ 85 of 106] Compiling Xmobar.Config.Types
+xmobar   > [ 86 of 106] Compiling Xmobar.Run.Loop
+xmobar   > [ 87 of 106] Compiling Xmobar.Draw.Types
+xmobar   > [ 88 of 106] Compiling Xmobar.Draw.Boxes
+xmobar   > [ 89 of 106] Compiling Xmobar.Config.Template
+xmobar   > [ 90 of 106] Compiling Xmobar.Config.Parse
+xmobar   > [ 91 of 106] Compiling Xmobar.Text.Swaybar
+xmobar   > [ 92 of 106] Compiling Xmobar.Text.Output
+xmobar   > [ 93 of 106] Compiling Xmobar.Text.Loop
+xmobar   > [ 94 of 106] Compiling Xmobar.Draw.Cairo
+xmobar   > [ 95 of 106] Compiling Xmobar.App.Opts
+xmobar   > [ 96 of 106] Compiling Xmobar.App.Config
+xmobar   > [ 97 of 106] Compiling Xmobar.X11.Text
+xmobar   > [ 98 of 106] Compiling Xmobar.X11.Window
+xmobar   > [ 99 of 106] Compiling Xmobar.X11.XPMFile
+xmobar   > [100 of 106] Compiling Xmobar.X11.Bitmap
+xmobar   > [101 of 106] Compiling Xmobar.X11.Types
+xmobar   > [102 of 106] Compiling Xmobar.X11.XRender
+xmobar   > [103 of 106] Compiling Xmobar.X11.Draw
+xmobar   > [104 of 106] Compiling Xmobar.X11.Loop
+xmobar   > [105 of 106] Compiling Xmobar.App.Main
+xmobar   > [106 of 106] Compiling Xmobar
+xmobar   > Preprocessing executable 'xmobar' for xmobar-0.48.1..
+xmobar   > Building executable 'xmobar' for xmobar-0.48.1..
+xmobar   > [1 of 1] Compiling Main [Xmobar package changed]
+xmobar   > [2 of 2] Linking .stack-work/dist/x86_64-linux-tinfo6/ghc-9.4.8/build/xmobar/xmobar [Objects changed]
+xmobar   > copy/register
+xmobar   > Installing library in /home/paul/.config/xmonad/.stack-work/install/x86_64-linux-tinfo6/b580226a5834c213eef04425e427a7c87a8778e4b7c785a0009b016c91065c47/9.4.8/lib/x86_64-linux-ghc-9.4.8/xmobar-0.48.1-Fxchq2QuY7K6CWe8Kyw36u
+xmobar   > Installing executable xmobar in /home/paul/.config/xmonad/.stack-work/install/x86_64-linux-tinfo6/b580226a5834c213eef04425e427a7c87a8778e4b7c785a0009b016c91065c47/9.4.8/bin
+xmobar   > Registering library for xmobar-0.48.1..
+my-xmonad> configure (exe)
+my-xmonad> Configuring my-xmonad-0.1.0.0...
+my-xmonad> build (exe) with ghc-9.4.8
+my-xmonad> Preprocessing executable 'xmonad' for my-xmonad-0.1.0.0..
+my-xmonad> Building executable 'xmonad' for my-xmonad-0.1.0.0..
+my-xmonad> [1 of 3] Compiling Paths_my_xmonad [Source file changed]
+my-xmonad> [4 of 4] Linking .stack-work/dist/x86_64-linux-tinfo6/ghc-9.4.8/build/xmonad/xmonad [Objects changed]
+my-xmonad> Preprocessing executable 'xmobar' for my-xmonad-0.1.0.0..
+my-xmonad> Building executable 'xmobar' for my-xmonad-0.1.0.0..
+my-xmonad> [1 of 3] Compiling Main [Xmobar package changed]
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmobar.hs:164:1: warning: [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘fn1’
+my-xmonad>     |
+my-xmonad> 164 | fn1 = fn 1
+my-xmonad>     | ^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmobar.hs:166:1: warning: [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘fn3’
+my-xmonad>     |
+my-xmonad> 166 | fn3 = fn 3
+my-xmonad>     | ^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmobar.hs:167:1: warning: [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘fn4’
+my-xmonad>     |
+my-xmonad> 167 | fn4 = fn 4
+my-xmonad>     | ^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmobar.hs:168:1: warning: [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘fn5’
+my-xmonad>     |
+my-xmonad> 168 | fn5 = fn 5
+my-xmonad>     | ^^^
+my-xmonad> [2 of 3] Compiling Paths_my_xmonad [Source file changed]
+my-xmonad> [4 of 4] Linking .stack-work/dist/x86_64-linux-tinfo6/ghc-9.4.8/build/xmobar/xmobar [Objects changed]
+my-xmonad> copy/register
+my-xmonad> Installing executable xmonad in /home/paul/.config/xmonad/.stack-work/install/x86_64-linux-tinfo6/b580226a5834c213eef04425e427a7c87a8778e4b7c785a0009b016c91065c47/9.4.8/bin
+my-xmonad> Installing executable xmobar in /home/paul/.config/xmonad/.stack-work/install/x86_64-linux-tinfo6/b580226a5834c213eef04425e427a7c87a8778e4b7c785a0009b016c91065c47/9.4.8/bin
+Completed 4 action(s).
