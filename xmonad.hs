@@ -178,6 +178,8 @@ myStartupHook    = do
       spawnOnce "indicator-multiload"
       spawnOnce "udiskie -q -s -f nemo &"
       spawnOnce "eval \"$(fasd --init auto)"
+      -- spawnOnce "systemctl restart --user pipewire.service"
+      -- spawnOnce "systemctl restart --user wireplumber.service"
       spawnOnce "pulseaudio --start"
       spawnOnce "pasystray"
       spawnOnce "my-player-set"
@@ -188,7 +190,7 @@ myStartupHook    = do
       -- spawnOnce "cadence --minimized"
       -- spawnOnce "ulauncher"
       spawnOnce "nemo-desktop"
-      spawnOnce $ myTerminal <> " -e tmux attach"
+      spawnOnce $ myTerminal <> " tmux attach"
       spawnOnce myBrowser
 
 myFocusFollowsMouse :: Bool
