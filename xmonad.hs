@@ -7,7 +7,7 @@
     1. Make a small change.
     2. Hit "super-q", which recompiles and restarts xmonad
     3. If there is an error, undo your change and hit "super-q" again to
-       get to a stable place again.
+        get to a stable place again.
     4. Repeat
 
   Author:     David Brewer
@@ -39,7 +39,7 @@ import           XMonad.Hooks.ManageDocks
 -- import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
 import           XMonad.Hooks.UrgencyHook
-import           XMonad.Layout.Circle
+import           XMonad.Layout.CircleEx (CircleEx (cDelta), circleEx, circle)
 import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.Grid
 -- import           XMonad.Layout.IM
@@ -283,7 +283,8 @@ defaultLayouts = avoidStruts (
 
   -- Circle layout places the master window in the center of the screen.
   -- Remaining windows appear in a circle around it
-  ||| Circle
+  ||| circle
+  ||| myCircle
   -- ||| layoutHintsToCenter Circle
 
   -- Grid layout tries to equally distribute windows in the available
@@ -294,6 +295,8 @@ defaultLayouts = avoidStruts (
   ||| noBorders Full
   )
   ||| noBorders (fullscreenFull Full)
+  where
+    myCircle = circleEx {cDelta = - (3 * pi / 4)}
 
 tabConfig :: Theme
 tabConfig = def {

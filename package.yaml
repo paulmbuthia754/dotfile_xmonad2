@@ -18,23 +18,29 @@ dependencies:
   - unix
   - X11
   - xmobar
-  - xmonad >= 0.17
-  - xmonad-contrib >= 0.17
+  - xmonad >= 0.18
+  - xmonad-contrib >= 0.18
 
-source-dirs:
-  - lib
-  - .
 
 executables:
   xmonad:
     main: xmonad.hs
+    source-dirs:
+      - lib/src
+      - .
     language: GHC2021
     dependencies:
       - xmonad
       - X11 
-      - xmobar
   xmobar:
     main: xmobar.hs
     language: GHC2021
     dependencies:
       - xmobar
+
+# library:
+#   source-dirs:
+#     - lib
+#     - .
+#   exposed-modules:
+#     - XMonad.Actions.CycleRecentWS

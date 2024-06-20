@@ -11,11 +11,7 @@ build-type:     Simple
 executable xmobar
   main-is: xmobar.hs
   other-modules:
-      XMonad.Actions.CycleShiftRecentWS
       Paths_my_xmonad
-  hs-source-dirs:
-      lib
-      ./
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -threaded
   build-depends:
       X11
@@ -32,8 +28,8 @@ executable xmobar
     , unix
     , utf8-string
     , xmobar
-    , xmonad >=0.17
-    , xmonad-contrib >=0.17
+    , xmonad >=0.18
+    , xmonad-contrib >=0.18
   default-language: GHC2021
 
 executable xmonad
@@ -42,7 +38,7 @@ executable xmonad
       XMonad.Actions.CycleShiftRecentWS
       Paths_my_xmonad
   hs-source-dirs:
-      lib
+      lib/src
       ./
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -threaded
   build-depends:
@@ -61,5 +57,5 @@ executable xmonad
     , utf8-string
     , xmobar
     , xmonad
-    , xmonad-contrib >=0.17
+    , xmonad-contrib >=0.18
   default-language: GHC2021

@@ -23,7 +23,8 @@
 # resolver: lts-21.13
 # resolver: lts-21.22
 # resolver: lts-22.8
-resolver: lts-21.25
+# resolver: lts-21.25
+resolver: lts-22.26
 # User packages to be built.
 # Various formats can be used as shown in the example below.
 #
@@ -49,6 +50,8 @@ packages:
 #
 extra-deps:
   - netlink-1.1.1.0@sha256:d83424b5ba9921191449e4b1f53c7cba7f4375f2c55a9b737c77e982e1f40d00,3689
+  - xmonad-0.18.0
+  - xmonad-contrib-0.18.0
 
 # Override default flag values for local packages and extra-deps
 flags:
@@ -75,8 +78,10 @@ system-ghc: true
 # arch: x86_64
 #
 # Extra directories used by stack for building
-extra-include-dirs: [./lib]
-extra-lib-dirs: [./lib]
+extra-include-dirs:
+  - lib/src
+extra-lib-dirs:
+  - lib/build
 #
 # Allow a newer minor version of GHC than the snapshot specifies
 # compiler-check: newer-minor
