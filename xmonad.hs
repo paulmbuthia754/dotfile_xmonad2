@@ -64,6 +64,7 @@ import qualified Data.Map                          as M
 import           Data.Char                      (toUpper)
 -- import           Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet                   as W
+import XMonad.Util.Replace (replace)
 -- import           XMonad.ManageHook
 
 {-
@@ -758,7 +759,7 @@ colorCopies = copiesPP $ xmobarColor myCopiedWSColor myAltBackGroundWSColor . cl
 
 myPP :: PP
 myPP =  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP {
-    ppTitle = xmobarColor myTitleColor myBackGroundWSColor . clickTitle . shortenWithTags myTitleLength,
+    ppTitle = xmobarColor myTitleColor myBackGroundWSColor . clickTitle . shortenWithTags myTitleLength . escapeBackTicks,
           -- ppCurrent = xmobarColor myAltCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
           ppCurrent = xmobarColor myCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
           ppVisible = xmobarColor myVisibleWSColor myBackGroundWSColor . wrap myVisibleWSLeft myVisibleWSRight . clickable,
@@ -773,7 +774,7 @@ myPP =  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP {
         first []  = "_"
 
 
-defaults = defaults' `additionalKeys` (myKeys defaults')
+defaults = defaults' `additionalKeys` myKeys defaults'
   where
     defaults' = def {
       -- simple stuff
@@ -811,6 +812,11 @@ xmobarEscape :: String -> String
 xmobarEscape = concatMap doubleLts
   where doubleLts '<' = "<"
         doubleLts x   = [x]
+
+escapeBackTicks :: String -> String
+escapeBackTicks = map replace'
+    where replace' '`' = '\''
+          replace' c   = c
 
 replaceSymbol :: Char -> String
 replaceSymbol '-' = "minus"
