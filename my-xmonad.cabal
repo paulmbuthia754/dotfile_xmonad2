@@ -12,13 +12,14 @@ executable xmobar
   main-is: xmobar.hs
   other-modules:
       Paths_my_xmonad
-  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -threaded
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -threaded -with-rtsopts=-V0
   build-depends:
       X11
     , base
     , containers
     , data-default
     , directory
+    , extra
     , filepath
     , fuzzy
     , monoid-subclasses
@@ -35,12 +36,13 @@ executable xmobar
 executable xmonad
   main-is: xmonad.hs
   other-modules:
+      Xmobar.Custom.Plugin.Battery
       XMonad.Actions.CycleShiftRecentWS
       Paths_my_xmonad
   hs-source-dirs:
       lib/src
       ./
-  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -threaded
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -threaded -with-rtsopts=-V0
   build-depends:
       X11
     , base

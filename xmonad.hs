@@ -221,7 +221,7 @@ myWorkspaces =
     "1:Term",  "2:Hub", "3:Mail",
     "4:Docs",  "5:Dev", "6:Web",
     "7:Chat",  "8:Dbg", "9:Pix",
-    "0:VM",    "-:Extr1", "=:Extr2"
+    "0:VM",    "-:Ext1", "=:Ext2"
   ]
 
 startupWorkspace :: String

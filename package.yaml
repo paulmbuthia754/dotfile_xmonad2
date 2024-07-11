@@ -1,7 +1,7 @@
 name: my-xmonad
 version: 0.1.0.0
 
-ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -threaded
+ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -O2 -threaded -with-rtsopts=-V0
 
 dependencies:
   - base
@@ -37,6 +37,7 @@ executables:
     language: GHC2021
     dependencies:
       - xmobar
+      - extra
 
 # library:
 #   source-dirs:

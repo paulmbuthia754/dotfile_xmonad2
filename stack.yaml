@@ -24,7 +24,8 @@
 # resolver: lts-21.22
 # resolver: lts-22.8
 # resolver: lts-21.25
-resolver: lts-22.26
+# resolver: lts-22.26
+resolver: lts-22.28
 # User packages to be built.
 # Various formats can be used as shown in the example below.
 #
@@ -59,14 +60,16 @@ flags:
     with_threaded: true
     with_xrender: true
     with_alsa: true
-    all_extensions: true
+    with_xpm: true
+    with_shared: true
+    with_rtsopts: true
 
 
 # Extra package databases containing global packages
 # extra-package-dbs: []
 
 # Control whether we use the GHC we find on the path
-system-ghc: true
+# system-ghc: true
 # allow-newer: true
 #
 # Require a specific version of stack, using version ranges

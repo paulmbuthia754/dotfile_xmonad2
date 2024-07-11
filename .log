@@ -1,0 +1,31 @@
+
+Warning: Building executable my-xmonad:xmobar. Other executables with the same name might be
+         overwritten: xmobar:xmobar.
+my-xmonad> build (exe) with ghc-9.6.6
+my-xmonad> Preprocessing executable 'xmonad' for my-xmonad-0.1.0.0..
+my-xmonad> Building executable 'xmonad' for my-xmonad-0.1.0.0..
+my-xmonad> Preprocessing executable 'xmobar' for my-xmonad-0.1.0.0..
+my-xmonad> Building executable 'xmobar' for my-xmonad-0.1.0.0..
+my-xmonad> [1 of 2] Compiling Main [Source file changed]
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmobar.hs:173:1: warning: [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘fn1’
+my-xmonad>     |
+my-xmonad> 173 | fn1 = fn 1
+my-xmonad>     | ^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmobar.hs:175:1: warning: [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘fn3’
+my-xmonad>     |
+my-xmonad> 175 | fn3 = fn 3
+my-xmonad>     | ^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmobar.hs:176:1: warning: [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘fn4’
+my-xmonad>     |
+my-xmonad> 176 | fn4 = fn 4
+my-xmonad>     | ^^^
+my-xmonad> [3 of 3] Linking .stack-work/dist/x86_64-linux/ghc-9.6.6/build/xmobar/xmobar [Objects changed]
+my-xmonad> copy/register
+my-xmonad> Installing executable xmonad in /home/paul/.config/xmonad/.stack-work/install/x86_64-linux/c231fb7fa26c2331b759bb21df34e08b7d1d26444af75c291e9d01b8843cef34/9.6.6/bin
+my-xmonad> Installing executable xmobar in /home/paul/.config/xmonad/.stack-work/install/x86_64-linux/c231fb7fa26c2331b759bb21df34e08b7d1d26444af75c291e9d01b8843cef34/9.6.6/bin

@@ -20,7 +20,8 @@ STACK_EXE=~paul/.ghcup/bin/stack
 
 
 # Unset STACK_YAML, to ensure that $SRC_DIR/stack.yaml is used.
-# unset STACK_YAML
+unset STACK_YAML
+STACK_YAML=$SRC_DIR/stack.yaml
 FAIL=0
 
 # Do the build
