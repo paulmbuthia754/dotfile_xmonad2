@@ -759,7 +759,7 @@ colorCopies = copiesPP $ xmobarColor myCopiedWSColor myAltBackGroundWSColor . cl
 
 myPP :: PP
 myPP =  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP {
-    ppTitle = xmobarColor myTitleColor myBackGroundWSColor . clickTitle . shortenWithTags myTitleLength . escapeBackTicks,
+    ppTitle = xmobarColor myTitleColor myBackGroundWSColor . clickAndShortenTitle myTitleLength . escapeBackTicks,
           -- ppCurrent = xmobarColor myAltCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
           ppCurrent = xmobarColor myCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
           ppVisible = xmobarColor myVisibleWSColor myBackGroundWSColor . wrap myVisibleWSLeft myVisibleWSRight . clickable,
@@ -828,9 +828,8 @@ clickable = click . xmobarEscape
   where click l@(x:_) = "<action=`xdotool key alt+" ++ replaceSymbol x ++ "` button=1>" ++ l ++ "</action>"
         click []      = []
 
-clickTitle :: (String, String) -> String
-clickTitle (original, short) = "<action=`echo \"" ++ original ++ "\" | dzen2 -p 3 -h '23' -e 'button1=exit:0' -bg '" ++ myBackGroundWSColor ++"' -fg '" ++ myTitleColor ++ "' -fn 'xft:DejaVu Sans  Mono:size=11:bold:antialias=true'`>" ++ short ++ "</action>"
+clickTitle :: String -> String -> String
+clickTitle original short = "<action=`echo \"" ++ original ++ "\" | dzen2 -p 3 -h '23' -e 'entertitle=grabkeys;leavetitle=ungrabkeys;button1=exit:0;key_Escape=ungrabkeys,exit:0' -bg '" ++ myBackGroundWSColor ++"' -fg '" ++ myTitleColor ++ "' -fn 'xft:DejaVu Sans  Mono:size=11:bold:antialias=true'`>" ++ short ++ "</action>"
 
-shortenWithTags :: Int -> String -> (String, String)
-shortenWithTags n s = (s, shorten n s)
-
+clickAndShortenTitle :: Int -> String -> String
+clickAndShortenTitle length title = clickTitle title $ shorten length title
