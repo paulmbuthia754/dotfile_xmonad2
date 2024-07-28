@@ -64,7 +64,6 @@ import qualified Data.Map                          as M
 import           Data.Char                      (toUpper)
 -- import           Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet                   as W
-import XMonad.Util.Replace (replace)
 -- import           XMonad.ManageHook
 
 {-
@@ -146,6 +145,7 @@ myFileSearch :: String
 myFileSearch         = "fsearch"
 -- myFont :: String
 -- myFont = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
+-- myFont = "Ubuntu Nerd Font Bold 10"
 
 myStartupHook :: X ()
 myStartupHook    = do
@@ -342,19 +342,19 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
   [
     -- mod-button1, Set the window to floating mode and move by dragging
     ((modMask, button1),
-     \w -> focus w >> mouseMoveWindow w >> afterDrag (snapMagicMove (Just 50) (Just 50) w))
+      \w -> focus w >> mouseMoveWindow w >> afterDrag (snapMagicMove (Just 50) (Just 50) w))
 
     -- mod-button1, Set the window to floating mode and resize by dragging
     , ((modMask .|. shiftMask, button1),
-       \w -> focus w >> Flex.mouseResizeWindow w >> afterDrag (snapMagicResize [L,R,U,D] (Just 50) (Just 50) w))
+        \w -> focus w >> Flex.mouseResizeWindow w >> afterDrag (snapMagicResize [L,R,U,D] (Just 50) (Just 50) w))
 
     -- mod-button2, Raise the window to the top of the stack
     , ((modMask, button2),
-       \w -> focus w >> windows W.swapMaster)
+        \w -> focus w >> windows W.swapMaster)
 
     -- mod-button3, Set the window to floating mode and resize by dragging
     , ((modMask, button3),
-       \w -> focus w >> mouseResizeWindow w >> afterDrag (snapMagicResize [L,R,U,D] (Just 50) (Just 50) w))
+        \w -> focus w >> mouseResizeWindow w >> afterDrag (snapMagicResize [L,R,U,D] (Just 50) (Just 50) w))
 
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
   ]
@@ -672,8 +672,8 @@ myManagementHooks = [
 
 myManageHook :: ManageHook
 myManageHook = manageDocks
-         <+> composeAll myManagementHooks
-         <+> namedScratchpadManageHook scratchpads
+          <+> composeAll myManagementHooks
+          <+> namedScratchpadManageHook scratchpads
 
 {-
   Workspace navigation keybindings. This is probably the part of the
@@ -718,20 +718,20 @@ workSpaceKeys :: [((KeyMask, KeySym), X ())]
 workSpaceKeys =
   [
     ((m .|. myModMask, k), windows $ f i)
-       | (i, k) <- zip myWorkspaces numPadKeys
-       , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask),(copy, shiftMask .|. controlMask)]
+        | (i, k) <- zip myWorkspaces numPadKeys
+        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask),(copy, shiftMask .|. controlMask)]
   ] ++
   [
     ((m .|. myModMask, k), windows $ f i)
-       | (i, k) <- zip myWorkspaces numKeys
-       , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask),(copy, shiftMask .|. controlMask)]
+        | (i, k) <- zip myWorkspaces numKeys
+        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask),(copy, shiftMask .|. controlMask)]
   ] ++
   M.toList (planeKeys myModMask (Lines 4) Circular) ++
   [
     ((m .|. myModMask, key), screenWorkspace sc
       >>= flip whenJust (windows . f))
       | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2]
- , (f, m) <- [(W.view, 0), (W.shift, shiftMask),(copy, shiftMask .|. controlMask)]
+  , (f, m) <- [(W.view, 0), (W.shift, shiftMask),(copy, shiftMask .|. controlMask)]
   ]
 
 {-
@@ -829,7 +829,7 @@ clickable = click . xmobarEscape
         click []      = []
 
 clickTitle :: String -> String -> String
-clickTitle original short = "<action=`echo \"" ++ original ++ "\" | dzen2 -p 3 -h '23' -e 'entertitle=grabkeys;leavetitle=ungrabkeys;button1=exit:0;key_Escape=ungrabkeys,exit:0' -bg '" ++ myBackGroundWSColor ++"' -fg '" ++ myTitleColor ++ "' -fn 'xft:DejaVu Sans  Mono:size=11:bold:antialias=true'`>" ++ short ++ "</action>"
+clickTitle original short = "<action=`echo \"" ++ original ++ "\" | dzen2 -p 3 -h '23' -e 'entertitle=grabkeys;button1=exit:0;key_Escape=ungrabkeys,exit:0' -bg '" ++ myBackGroundWSColor ++"' -fg '" ++ myTitleColor ++ "' -fn 'xft:DejaVu Sans  Mono:size=11:bold:antialias=true'`>" ++ short ++ "</action>"
 
 clickAndShortenTitle :: Int -> String -> String
-clickAndShortenTitle length title = clickTitle title $ shorten length title
+clickAndShortenTitle len ttl = clickTitle ttl $ shorten len ttl
