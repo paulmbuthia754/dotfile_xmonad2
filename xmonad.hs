@@ -64,6 +64,7 @@ import qualified Data.Map                          as M
 import           Data.Char                      (toUpper)
 -- import           Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet                   as W
+import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, transience')
 -- import           XMonad.ManageHook
 
 {-
@@ -651,6 +652,8 @@ myManagementHooks = [
   , className =? "rdesktop" --> doFloat
   , className =? "Orage" --> doFloat
   , className =? "Gnome-calendar" --> doFloat
+  , className =? "osmo" --> doFloat
+  , className =? "Osmo" --> doFloat
   , (className =? "Waterfox") --> viewShift "6:Web"
   -- , (className =? "Firefox") --> doF ( W.shift "6:Web")
   , (className =? "Empathy") --> doF (W.shift "7:Chat")
@@ -665,6 +668,8 @@ myManagementHooks = [
   , (className =? "Variety") <&&> (stringProperty "WM_NAME" =? "Variety History" ) --> (hasBorder False >> doFloat)
   , (className =? "Variety") <&&> (stringProperty "WM_NAME" =? "Variety Recent Downloads" ) --> (hasBorder False >> doFloat)
   , (className =? "Rhythmbox") <&&> (stringProperty "_GTK_WINDOW_OBJECT_PATH" =? "/org/gnome/Rhythmbox3/window/2" ) --> (hasBorder False >> doFloat)
+  , isFullscreen --> doFullFloat
+  , transience'
   -- This is for the Rhythmbox small window feature
   -- Try to always raise the stalonetray window
   ] where viewShift = doF . liftM2 (.) W.greedyView W.shift
@@ -742,7 +747,7 @@ workSpaceKeys =
 
 main :: IO ()
 main = do
-  xmonad . docks . addEwmhWorkspaceSort (pure myFliter) . ewmhFullscreen . ewmh . withSB myStatusBar $ defaults
+  xmonad . docks . ewmhFullscreen . addEwmhWorkspaceSort (pure myFliter) . ewmh . withSB myStatusBar $ defaults
   -- xmprocess <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
   -- handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook <+> Bars.dynStatusBarEventHook barCreator barDestoyer,
   -- logHook            = myLogHook {- xmprocess -}
@@ -832,4 +837,4 @@ clickTitle :: String -> String -> String
 clickTitle original short = "<action=`echo \"" ++ original ++ "\" | dzen2 -p 3 -h '23' -e 'entertitle=grabkeys;button1=exit:0;key_Escape=ungrabkeys,exit:0' -bg '" ++ myBackGroundWSColor ++"' -fg '" ++ myTitleColor ++ "' -fn 'xft:DejaVu Sans  Mono:size=11:bold:antialias=true'`>" ++ short ++ "</action>"
 
 clickAndShortenTitle :: Int -> String -> String
-clickAndShortenTitle len ttl = clickTitle ttl $ shorten len ttl
+clickAndShortenTitle len title' = clickTitle title' $ shorten len title'

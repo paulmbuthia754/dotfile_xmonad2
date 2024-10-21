@@ -51,10 +51,10 @@ unView w0 w1 = fixOrderH . fixOrderV . view' (currentTag w0) $ w1
 
 -- Reimplement cycleWindowSets with viewShift
 cycleShiftWindowSets :: (WindowSet -> [WorkspaceId])
-                     -> [KeySym]
-                     -> KeySym
-                     -> KeySym
-                     -> X ()
+                        -> [KeySym]
+                        -> KeySym
+                        -> KeySym
+                        -> X ()
 cycleShiftWindowSets genOptions mods keyNext keyPrev = do
     (options, unView') <- gets $ (genOptions &&& unView) . windowset
     XConf {theRoot = root, display = d} <- ask

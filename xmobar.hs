@@ -6,12 +6,13 @@ import Data.List ( foldl' )
 
 config :: Config
 config = defaultConfig {
-    font = "Ubuntu Nerd Font Bold 10",
+    font = "Ubuntu Bold 10",
     additionalFonts = [ "mononoki Nerd Font 10",
                         "Font Awesome 6 Free Bold 9",
                         "Font Awesome 6 Brands Bold 9",
                         "DejaVu Sans Mono Bold 9",
-                        "Ubuntu Mono Bold 11"
+                        "Ubuntu Mono Bold 11",
+                        "Ubuntu Nerd Font Bold 10"
                         ],
     bgColor = "black",
     fgColor = "grey",
@@ -157,10 +158,8 @@ myTemplate hasBatt = xmonadLog `align` iconRow hasBatt
 action :: String -> String -> String
 action command text = "<action=`" <> command <> "`>" <> text <> "</action>"
 
-fontColor :: String -> String -> String
+fc, fontColor :: String -> String -> String
 fontColor clr text = "<fc=" <> clr <> ">" <> text <> "</fc>"
-
-fc :: String -> String -> String
 fc = fontColor
 
 icon :: String -> String
@@ -212,7 +211,7 @@ xmonadIcon :: String
 xmonadIcon = action "xdotool key alt+n" $ icon "xmonad-16.xpm"
 
 calender :: String
-calender = action "gnome-calender" $ fontColor "#eed77c" $ arg "date"
+calender = action "osmo -c" $ fontColor "#eed77c" $ arg "date"
 
 speaker :: String
 speaker = action "speaker-toggle" $ fontColor (arg "speaker-color") $ arg "alsa:default:Master"
@@ -228,7 +227,6 @@ deviceHasBattery :: IO Bool
 deviceHasBattery = not . null <$> listDirectory "/sys/class/power_supply"
 
 --- >>> deviceHasBattery 
--- True
 
 addBattery :: Config -> IO Config
 addBattery cfg = do
