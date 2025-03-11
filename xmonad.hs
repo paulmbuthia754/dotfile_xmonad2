@@ -82,8 +82,9 @@ myNormalBorderColor  = "#cccccc"      -- color of inactive border
 myBorderWidth       :: Dimension
 myBorderWidth        = 1              -- width of border around windows
 
-myTerminal, myBrowser, myIMRosterTitle :: String
-myTerminal           = "kitty --single-instance"   -- which terminal software to use
+myTerm, myTerminal, myBrowser, myIMRosterTitle :: String
+myTerm           = "kitty"   -- which terminal software to use
+myTerminal           = myTerm <> " --single-instance"   -- which terminal software to use
 myBrowser            = "firefox"
 myIMRosterTitle      = "Buddy List"   -- title of roster on IM workspace
                                       -- use "Buddy List" for Pidgin, but
@@ -162,7 +163,8 @@ myStartupHook    = do
 
       -- Gnome Services
       spawnOnce "/usr/lib/x86_64-linux-gnu/indicator-session/indicator-session-service"
-      spawnOnce "/usr/libexec/gsd-xsettings"
+      -- spawnOnce "/usr/libexec/gsd-xsettings"
+      spawnOnce "xfsettingsd"
 
       -- Keyring
       spawnOnce "gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh"
@@ -179,7 +181,7 @@ myStartupHook    = do
       spawnOnce "indicator-cpufreq"
       spawnOnce "indicator-multiload"
       spawnOnce "udiskie -q -s -f nemo &"
-      spawnOnce "eval \"$(fasd --init auto)"
+      spawnOnce "eval \"$(fasd --init auto)\""
       -- spawnOnce "systemctl restart --user pipewire.service"
       -- spawnOnce "systemctl restart --user wireplumber.service"
       spawnOnce "pulseaudio --start"
@@ -398,11 +400,17 @@ myKeys conf =
     , ((myModMask, xK_F7), spawn "my-player volume 0.1-")
     , ((myModMask, xK_F8), spawn "my-player volume 0.1+")
     , ((myModMask, xK_bracketleft), spawn "my-player previous")
+    , ((0,0x1008ff16), spawn "my-player previous")
     , ((myModMask, xK_bracketright), spawn "my-player next")
+    , ((0,0x1008ff17), spawn "my-player next")
     , ((myModMask, xK_backslash), spawn "my-player play-pause")
+    , ((0,0x1008ff14), spawn "my-player play-pause")
     , ((myModMask .|. shiftMask, xK_backslash), spawn "my-player stop")
+    , ((shiftMask, 0x1008ff14), spawn "my-player stop")
     , ((myModMask .|. shiftMask, xK_bracketleft), spawn "my-player position 10-")
+    , ((shiftMask, 0x1008ff16), spawn "my-player position 10-")
     , ((myModMask .|. shiftMask, xK_bracketright), spawn "my-player position 10+")
+    , ((shiftMask, 0x1008ff17), spawn "my-player position 10+")
     , ((myModMask, xK_apostrophe), spawn "my-player-next") -- go to next player in mpris
     , ((myModMask .|. shiftMask, xK_apostrophe), spawn "my-player-prev") -- go to prev player in mpris
 
@@ -424,6 +432,7 @@ myKeys conf =
     -- Spawn the launcher using command specified by myGuiLauncher.
     -- Use this to launch programs graphically without a key binding.
     , ((mySecModMask .|. shiftMask, xK_p), spawn myAltLauncher)
+
 
     -- Take a selective screenshot using the command specified by mySelectScreenshot.
     , ((myModMask, xK_s), spawn myScreenshot)
@@ -450,10 +459,11 @@ myKeys conf =
     , ((myModMask,                xK_n), viewEmptyWorkspace)
     , ((myModMask .|. shiftMask,  xK_n), tagToEmptyWorkspace)
     , ((myModMask .|. controlMask, xK_n), sendToEmptyWorkspace)
+    , ((mySecModMask, xK_n), sendToEmptyWorkspace)
 
     -- Rotate through terminal windows
-    , ((mySecModMask, xK_Return), nextMatch Forward  $ isClass myTerminal)
-    , ((mySecModMask .|. shiftMask, xK_Return), nextMatch Backward $ isClass myTerminal)
+    , ((mySecModMask, xK_Return), nextMatch Forward  $ isClass myTerm)
+    , ((mySecModMask .|. shiftMask, xK_Return), nextMatch Backward $ isClass myTerm)
 
     -- Rotate through similar windows
       -- , ((mySecModMask , xK_j), nextMatchWithThis2 Forward  className isOnAnyVisibleWS)
@@ -511,25 +521,31 @@ myKeys conf =
     , ((myModMask .|. shiftMask, xK_space), sendMessage FirstLayout)
 
     -- Resize viewed windows to the correct size.
-    , ((mySecModMask, xK_n), refresh)
+    , ((mySecModMask .|. controlMask, xK_n), refresh)
 
     -- Cycle through most recent nonEmpty workspaces.Ommitting NSP.
     , ((mySecModMask, xK_grave), cycleRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_grave)
+    , ((mySecModMask, xK_grave), cycleRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_masculine)
 
     -- Cycle through most recent nonEmpty workspaces. Ommitting NSP
     , ((mySecModMask, xK_Tab), cycleRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_grave)
+    , ((mySecModMask, xK_Tab), cycleRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_masculine)
 
     -- Cycle shift through most recent nonEmpty workspaces.Ommitting NSP.
     , ((mySecModMask .|. shiftMask, xK_grave), cycleShiftRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_grave)
+    , ((mySecModMask .|. shiftMask, xK_grave), cycleShiftRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_masculine)
 
     -- Cycle shift through most recent nonEmpty workspaces. Ommitting NSP
     , ((mySecModMask .|. shiftMask, xK_Tab), cycleShiftRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_grave)
+    , ((mySecModMask .|. shiftMask, xK_Tab), cycleShiftRecentNonEmptyWS_ scratchpadWorkspaceTag [xK_Super_L] xK_Tab xK_masculine)
 
     -- Cycle through most recent workspaces including empty workspaces. Ommitting NSP.
     , ((mySecModMask .|. controlMask, xK_grave), cycleRecentWS_ scratchpadWorkspaceTag [xK_Super_L, xK_Shift_L] xK_Tab xK_grave)
+    , ((mySecModMask .|. controlMask, xK_grave), cycleRecentWS_ scratchpadWorkspaceTag [xK_Super_L, xK_Shift_L] xK_Tab xK_masculine)
 
     -- Cycle through most recent workspaces including empty workspaces.Ommitting NSP.
     , ((mySecModMask .|. controlMask, xK_Tab), cycleRecentWS_ scratchpadWorkspaceTag [xK_Super_L, xK_Shift_L] xK_Tab xK_grave)
+    , ((mySecModMask .|. controlMask, xK_Tab), cycleRecentWS_ scratchpadWorkspaceTag [xK_Super_L, xK_Shift_L] xK_Tab xK_masculine)
 
     -- Move focus to the next window.
     , ((myModMask, xK_Tab), windows W.focusDown)

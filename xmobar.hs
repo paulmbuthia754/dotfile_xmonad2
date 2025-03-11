@@ -22,7 +22,7 @@ config = defaultConfig {
     -- of your screen to make it play nicely with stalonetray, which we
     -- want to be taking up the remainer of the space on the right side
     -- of your screen.
-    position = TopW L 84,
+    position = TopW L 91,
 
     -- general behaviour
     lowerOnStart =   False,
@@ -227,6 +227,7 @@ deviceHasBattery :: IO Bool
 deviceHasBattery = not . null <$> listDirectory "/sys/class/power_supply"
 
 --- >>> deviceHasBattery 
+-- True
 
 addBattery :: Config -> IO Config
 addBattery cfg = do
