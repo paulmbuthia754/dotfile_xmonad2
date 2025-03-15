@@ -194,8 +194,9 @@ myStartupHook    = do
       -- spawnOnce "cadence --minimized"
       -- spawnOnce "ulauncher"
       spawnOnce "nemo-desktop"
-      spawnOnce $ myTerminal <> " tmux attach"
+      -- spawnOnce $ myTerminal <> " tmux attach"
       spawnOnce myBrowser
+      spawnOnce "flatpak run com.rtosta.zapzap"
 
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
@@ -386,7 +387,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
   the output.
 -}
 
-myKeys :: XConfig layout -> [((KeyMask, KeySym), (X ()))]
+myKeys :: XConfig layout -> [((KeyMask, KeySym), X ())]
 myKeys conf =
   [
     ((myModMask, xK_b), sendMessage ToggleStruts)
