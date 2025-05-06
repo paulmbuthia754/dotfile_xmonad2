@@ -17,7 +17,7 @@
       Repository; https://github.com/paulmbuthia754/dotfile_xmonad2
 -}
 
-import           Control.Monad                     (liftM2)
+import           Control.Monad                     (liftM2, when)
 -- import           Control.Arrow                     ((&&&))
 import           System.Exit
 -- import           System.IO
@@ -68,6 +68,8 @@ import           Data.Char                      (toUpper)
 -- import           Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet                   as W
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, transience')
+import XMonad.StackSet (allWindows)
+import XMonad.Prelude (filterM)
 -- import           XMonad.ManageHook
 
 {-
@@ -599,6 +601,8 @@ myKeys conf =
     , ((mySecModMask .|. shiftMask, xK_q), io exitSuccess)
 
   -- Logout utility
+    , ((myModMask, xK_c), toggleOnWindows (isClass "ZapZap") killWindow (spawn "flatpak run com.rtosta.zapzap"))
+  -- Logout utility
     , ((myModMask .|. shiftMask, xK_q), spawn "byebye")
 
     -- Restart xmonad.
@@ -705,7 +709,6 @@ myManageHook = manageDocks
   configuration I have spent the most time messing with, but understand
   the least. Be very careful if messing with this section.
 -}
-
 -- We define two lists of keycodes for use in the rest of the
 -- keyboard configuration. The first is the list of numpad keys,
 -- in the order they occur on the keyboard (left to right and
@@ -858,3 +861,17 @@ clickTitle original short = "<action=`echo \"" ++ original ++ "\" | dzen2 -p 3 -
 
 clickAndShortenTitle :: Int -> String -> String
 clickAndShortenTitle len title' = clickTitle title' $ shorten len title'
+
+doOnWindows :: Query Bool -> (Window -> X a) -> X ()
+doOnWindows query action = do
+  allWs <- gets (allWindows. windowset)
+  interestingWs <- filterM (runQuery query) allWs
+  mapM_  action  interestingWs
+
+toggleOnWindows :: Query Bool -> (Window -> X a) -> X () -> X ()
+toggleOnWindows query trueAction falseAction = do 
+  allWs <- gets (allWindows. windowset)
+  interestingWs <- filterM (runQuery query) allWs
+  if null interestingWs
+    then falseAction
+    else mapM_  trueAction  interestingWs
