@@ -9,9 +9,12 @@
     3. If there is an error, undo your change and hit "super-q" again to
         get to a stable place again.
     4. Repeat
-
-  Author:     David Brewer
-  Repository: https://github.com/davidbrewer/xmonad-ubuntu-conf
+  Thanks to original
+      Author:     David Brewer
+      Repository: https://github.com/davidbrewer/xmonad-ubuntu-conf
+  Current
+      Author:     Paul Mbuthia
+      Repository; https://github.com/paulmbuthia754/dotfile_xmonad2
 -}
 
 import           Control.Monad                     (liftM2)
