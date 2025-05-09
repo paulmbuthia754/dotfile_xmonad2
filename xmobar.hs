@@ -4,7 +4,6 @@ import Xmobar
 import System.Directory ( listDirectory )
 import Network.HostName (getHostName)
 import Data.List ( foldl' )
-import Xmobar (Config)
 
 config :: Config
 config = defaultConfig {
@@ -256,5 +255,3 @@ main = do
         >>= modifyForLaptop
         >>= configFromArgs 
         >>= xmobar
-    -- cfg <- configFromArgs cfg'
-    -- xmobar cfg
