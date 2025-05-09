@@ -2,7 +2,9 @@
 
 import Xmobar
 import System.Directory ( listDirectory )
+import Network.HostName (getHostName)
 import Data.List ( foldl' )
+import Xmobar (Config)
 
 config :: Config
 config = defaultConfig {
@@ -23,7 +25,6 @@ config = defaultConfig {
     -- want to be taking up the remainer of the space on the right side
     -- of your screen.
     position = TopW L 91,
-
     -- general behaviour
     lowerOnStart =   False,
     overrideRedirect = True,
@@ -236,8 +237,24 @@ addBattery cfg = do
         then cfg{template = myTemplate hasBatt, commands = batteryPlugin:myCommands}
         else cfg{template = myTemplate hasBatt, commands = myCommands}
 
+isLaptop :: IO Bool
+isLaptop = do 
+    host <- getHostName
+    return $ host == "paul-linux-g"
+
+modifyForLaptop :: Config -> IO Config
+modifyForLaptop cfg = do
+    laptop <- isLaptop
+    return $ if laptop 
+        then cfg {position = TopSize L 85 16}
+        else cfg
+
+
 main :: IO ()
 main = do 
-    cfg' <- addBattery config
-    cfg <- configFromArgs cfg'
-    xmobar cfg
+    addBattery config 
+        >>= modifyForLaptop
+        >>= configFromArgs 
+        >>= xmobar
+    -- cfg <- configFromArgs cfg'
+    -- xmobar cfg

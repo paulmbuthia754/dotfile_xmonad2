@@ -10,6 +10,7 @@ dependencies:
   - directory
   - filepath
   - fuzzy
+  - hostname
   - monoid-subclasses
   - mtl
   - process
