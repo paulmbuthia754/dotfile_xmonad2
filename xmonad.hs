@@ -196,6 +196,7 @@ myStartupHook    = do
       spawnOnce "blueman-applet"
       spawnOnce "psensor"
       spawnOnce "kdeconnect-indicator"
+      spawnOnce "mate-optimus-applet"
       -- spawnOnce "cadence --minimized"
       -- spawnOnce "ulauncher"
       spawnOnce "nemo-desktop"

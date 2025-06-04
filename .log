@@ -1,0 +1,5 @@
+
+Warning: nix (Nix) 2.29.0 is on the PATH (at /nix/var/nix/profiles/default/bin/nix) but Stack's Nix
+         integration is disabled. To mute this message in future, set notify-if-nix-on-path: false
+         in Stack's configuration.
+         

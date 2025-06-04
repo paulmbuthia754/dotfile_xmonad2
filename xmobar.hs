@@ -64,7 +64,8 @@ myCommands = [
     Run $ DiskU [
         ("/",                   fn2 "\xf390" <> ":<usedp>% "),
         ("/home",               fn2 "\xf015" <> ":<usedp>% "),
-        ("/media/paul/Media",   fn2 "\xf008" <> ":<usedp>% ")
+        ("/media/paul/Media",   fn2 "\xf008M" <> ":<usedp>% "),
+        ("/mnt/extra",   fn2 "\xf008X" <> ":<usedp>% ")
         ]
         ["-L", "20", "-H", "50", "-m", "1", "-p", "3"]
         60,
@@ -91,7 +92,6 @@ myCommands = [
     Run $ Com "/bin/bash" ["-c", "~/bin/speaker-color #e6744c"] "speaker-color" 10,
 
     Run $ Alsa "default" "Master" [
-        -- "-t", "<fn=2>\xf028</fn>: <volume>% <status>",
         "-t", fn2 "\xf028" <> ": <volume>% <status>",
         "--",
         "--on", "",
