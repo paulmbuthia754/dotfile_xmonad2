@@ -1,5 +1,181 @@
 
-Warning: nix (Nix) 2.29.0 is on the PATH (at /nix/var/nix/profiles/default/bin/nix) but Stack's Nix
-         integration is disabled. To mute this message in future, set notify-if-nix-on-path: false
-         in Stack's configuration.
-         
+Warning: Building executable my-xmonad:xmobar. Other executables with the same name might be
+         overwritten: xmobar:xmobar.
+my-xmonad> configure (exe)
+my-xmonad> Configuring my-xmonad-0.1.0.0...
+my-xmonad> build (exe) with ghc-9.10.3
+my-xmonad> Preprocessing executable 'xmobar' for my-xmonad-0.1.0.0...
+my-xmonad> Building executable 'xmobar' for my-xmonad-0.1.0.0...
+my-xmonad> Preprocessing executable 'xmonad' for my-xmonad-0.1.0.0...
+my-xmonad> Building executable 'xmonad' for my-xmonad-0.1.0.0...
+my-xmonad> [3 of 4] Compiling Main [Source file changed]
+my-xmonad> /home/paul/.config/xmonad/xmonad.hs:20:61: warning: [GHC-38856] [-Wunused-imports]
+my-xmonad>     The import of ‘when’ from module ‘Control.Monad’ is redundant
+my-xmonad>    |
+my-xmonad> 20 | import           Control.Monad                     (liftM2, when)
+my-xmonad>    |                                                             ^^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmonad.hs:94:1: warning: [GHC-40910] [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘myIMRosterTitle’
+my-xmonad>    |
+my-xmonad> 94 | myIMRosterTitle      = "Buddy List"   -- title of roster on IM workspace
+my-xmonad>    | ^^^^^^^^^^^^^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmonad.hs:114:1: warning: [GHC-40910] [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘myAltCurrentWSColor’
+my-xmonad>     |
+my-xmonad> 114 | myAltCurrentWSColor  = "#11eeff"  -- color of active workspace
+my-xmonad>     | ^^^^^^^^^^^^^^^^^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmonad.hs:130:1: warning: [GHC-40910] [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘myAltCurrentWSLeft’
+my-xmonad>     |
+my-xmonad> 130 | myAltCurrentWSLeft   = "["        -- wrap active workspace with these
+my-xmonad>     | ^^^^^^^^^^^^^^^^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmonad.hs:132:1: warning: [GHC-40910] [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘myAltCurrentWSRight’
+my-xmonad>     |
+my-xmonad> 132 | myAltCurrentWSRight  = "]"
+my-xmonad>     | ^^^^^^^^^^^^^^^^^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmonad.hs:271:1: warning: [GHC-38417] [-Wmissing-signatures]
+my-xmonad>     Top-level binding with no type signature:
+my-xmonad>       defaultLayouts :: Choose
+my-xmonad>                           (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                              AvoidStruts
+my-xmonad>                              (Choose
+my-xmonad>                                 ResizableTall
+my-xmonad>                                 (Choose
+my-xmonad>                                    (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                       LayoutHints ResizableTall)
+my-xmonad>                                    (Choose
+my-xmonad>                                       (Mirror ResizableTall)
+my-xmonad>                                       (Choose
+my-xmonad>                                          (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                             LayoutHints (Mirror ResizableTall))
+my-xmonad>                                          (Choose
+my-xmonad>                                             CircleEx
+my-xmonad>                                             (Choose
+my-xmonad>                                                CircleEx
+my-xmonad>                                                (Choose
+my-xmonad>                                                   Grid
+my-xmonad>                                                   (Choose
+my-xmonad>                                                      (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                                         (XMonad.Layout.Decoration.Decoration
+my-xmonad>                                                            TabbedDecoration
+my-xmonad>                                                            XMonad.Layout.Decoration.DefaultShrinker)
+my-xmonad>                                                         XMonad.Layout.Simplest.Simplest)
+my-xmonad>                                                      (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                                         WithBorder Full))))))))))
+my-xmonad>                           (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                              WithBorder
+my-xmonad>                              (XMonad.Layout.LayoutModifier.ModifiedLayout FullscreenFull Full))
+my-xmonad>                           Window
+my-xmonad>     |
+my-xmonad> 271 | defaultLayouts = avoidStruts (
+my-xmonad>     | ^^^^^^^^^^^^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmonad.hs:341:1: warning: [GHC-38417] [-Wmissing-signatures]
+my-xmonad>     Top-level binding with no type signature:
+my-xmonad>       gimpLayout :: XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                       SmartBorder
+my-xmonad>                       (XMonad.Layout.LayoutModifier.ModifiedLayout AvoidStruts ThreeCol)
+my-xmonad>                       a
+my-xmonad>     |
+my-xmonad> 341 | gimpLayout = smartBorders (avoidStruts (ThreeColMid 1 (3/100) (3/4)))
+my-xmonad>     | ^^^^^^^^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmonad.hs:341:1: warning: [GHC-40910] [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘gimpLayout’
+my-xmonad>     |
+my-xmonad> 341 | gimpLayout = smartBorders (avoidStruts (ThreeColMid 1 (3/100) (3/4)))
+my-xmonad>     | ^^^^^^^^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmonad.hs:345:1: warning: [GHC-38417] [-Wmissing-signatures]
+my-xmonad>     Top-level binding with no type signature:
+my-xmonad>       myLayouts :: Choose
+my-xmonad>                      (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                         AvoidStruts
+my-xmonad>                         (Choose
+my-xmonad>                            ResizableTall
+my-xmonad>                            (Choose
+my-xmonad>                               (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                  LayoutHints ResizableTall)
+my-xmonad>                               (Choose
+my-xmonad>                                  (Mirror ResizableTall)
+my-xmonad>                                  (Choose
+my-xmonad>                                     (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                        LayoutHints (Mirror ResizableTall))
+my-xmonad>                                     (Choose
+my-xmonad>                                        CircleEx
+my-xmonad>                                        (Choose
+my-xmonad>                                           CircleEx
+my-xmonad>                                           (Choose
+my-xmonad>                                              Grid
+my-xmonad>                                              (Choose
+my-xmonad>                                                 (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                                    (XMonad.Layout.Decoration.Decoration
+my-xmonad>                                                       TabbedDecoration
+my-xmonad>                                                       XMonad.Layout.Decoration.DefaultShrinker)
+my-xmonad>                                                    XMonad.Layout.Simplest.Simplest)
+my-xmonad>                                                 (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                                    WithBorder Full))))))))))
+my-xmonad>                      (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                         WithBorder
+my-xmonad>                         (XMonad.Layout.LayoutModifier.ModifiedLayout FullscreenFull Full))
+my-xmonad>                      Window
+my-xmonad>     |
+my-xmonad> 345 | myLayouts =
+my-xmonad>     | ^^^^^^^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmonad.hs:806:1: warning: [GHC-38417] [-Wmissing-signatures]
+my-xmonad>     Top-level binding with no type signature:
+my-xmonad>       defaults :: XConfig
+my-xmonad>                     (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                        SmartBorder
+my-xmonad>                        (Choose
+my-xmonad>                           (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                              AvoidStruts
+my-xmonad>                              (Choose
+my-xmonad>                                 ResizableTall
+my-xmonad>                                 (Choose
+my-xmonad>                                    (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                       LayoutHints ResizableTall)
+my-xmonad>                                    (Choose
+my-xmonad>                                       (Mirror ResizableTall)
+my-xmonad>                                       (Choose
+my-xmonad>                                          (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                             LayoutHints (Mirror ResizableTall))
+my-xmonad>                                          (Choose
+my-xmonad>                                             CircleEx
+my-xmonad>                                             (Choose
+my-xmonad>                                                CircleEx
+my-xmonad>                                                (Choose
+my-xmonad>                                                   Grid
+my-xmonad>                                                   (Choose
+my-xmonad>                                                      (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                                         (XMonad.Layout.Decoration.Decoration
+my-xmonad>                                                            TabbedDecoration
+my-xmonad>                                                            XMonad.Layout.Decoration.DefaultShrinker)
+my-xmonad>                                                         XMonad.Layout.Simplest.Simplest)
+my-xmonad>                                                      (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                                         WithBorder Full))))))))))
+my-xmonad>                           (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                              WithBorder
+my-xmonad>                              (XMonad.Layout.LayoutModifier.ModifiedLayout
+my-xmonad>                                 FullscreenFull Full))))
+my-xmonad>     |
+my-xmonad> 806 | defaults = defaults' `additionalKeys` myKeys defaults'
+my-xmonad>     | ^^^^^^^^
+my-xmonad> 
+my-xmonad> /home/paul/.config/xmonad/xmonad.hs:867:1: warning: [GHC-40910] [-Wunused-top-binds]
+my-xmonad>     Defined but not used: ‘doOnWindows’
+my-xmonad>     |
+my-xmonad> 867 | doOnWindows query action = do
+my-xmonad>     | ^^^^^^^^^^^
+my-xmonad> 
+my-xmonad> [5 of 5] Linking .stack-work/dist/x86_64-linux/ghc-9.10.3/build/xmonad/xmonad [Objects changed]
+my-xmonad> copy/register
+my-xmonad> Installing executable xmobar in /home/paul/.config/xmonad/.stack-work/install/x86_64-linux/ed86112de81e9e3b0dde8c207d4f70064eb1a141ebc4a33aca9da9ef098c88da/9.10.3/bin
+my-xmonad> Installing executable xmonad in /home/paul/.config/xmonad/.stack-work/install/x86_64-linux/ed86112de81e9e3b0dde8c207d4f70064eb1a141ebc4a33aca9da9ef098c88da/9.10.3/bin

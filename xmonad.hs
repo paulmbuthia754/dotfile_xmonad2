@@ -466,7 +466,7 @@ myKeys conf =
     , ((myModMask,                xK_n), viewEmptyWorkspace)
     , ((myModMask .|. shiftMask,  xK_n), tagToEmptyWorkspace)
     , ((myModMask .|. controlMask, xK_n), sendToEmptyWorkspace)
-    , ((mySecModMask, xK_n), sendToEmptyWorkspace)
+    , ((mySecModMask .|. shiftMask, xK_n), sendToEmptyWorkspace)
 
     -- Rotate through terminal windows
     , ((mySecModMask, xK_Return), nextMatch Forward  $ isClass myTerm)
@@ -480,11 +480,11 @@ myKeys conf =
     , ((mySecModMask , xK_k), nextMatchWithThis Backward className)
 
 -- Scratchpad Keybindings
-    , ((mySecModMask .|. shiftMask, xK_t), namedScratchpadAction scratchpads "htop")
-    , ((mySecModMask .|. shiftMask, xK_r), namedScratchpadAction scratchpads "gnote")
-    , ((mySecModMask .|. shiftMask, xK_n), namedScratchpadAction scratchpads "notes")
-    , ((mySecModMask .|. shiftMask, xK_m), namedScratchpadAction scratchpads "spotify")
-    , ((mySecModMask .|. shiftMask, xK_d), namedScratchpadAction scratchpads "qalculate")
+    , ((mySecModMask, xK_t), namedScratchpadAction scratchpads "htop")
+    , ((mySecModMask, xK_g), namedScratchpadAction scratchpads "gnote")
+    , ((mySecModMask, xK_n), namedScratchpadAction scratchpads "notes")
+    , ((mySecModMask, xK_m), namedScratchpadAction scratchpads "spotify")
+    , ((mySecModMask, xK_d), namedScratchpadAction scratchpads "qalculate")
 
 {-
     -- Mute volume.
