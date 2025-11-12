@@ -11,13 +11,13 @@
 
 # Identify the home of our gtkrc file, important for setting styles of 
 # gtk-based applications
-export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
+# export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export XDG_SESSION_DESKTOP=xmonad
 export XDG_CURRENT_DESKTOP=xmonad
 
 # Load X resources (fixes some font issues)
 xset +fp ~/.local/share/fonts & 
-xrdb -merge ~/.Xresources &
+# xrdb -merge ~/.Xresources &
 
 
 # Start compositing to support transparency. You can omit this
@@ -130,3 +130,6 @@ autorandr hp19 &
 # indicator-cpufreq &
 # psensor &
 # ulauncher &
+
+# Fix darkmode issues with gnome apps
+export GTK_THEME=Yaru-dark 

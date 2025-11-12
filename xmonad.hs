@@ -16,44 +16,32 @@
       Author:     Paul Mbuthia
       Repository; https://github.com/paulmbuthia754/dotfile_xmonad2
 -}
+{-# OPTIONS_GHC -Wno-missing-signatures #-}
+{-# OPTIONS_GHC -Wno-unused-top-binds #-}
 
-import           Control.Monad                     (liftM2, when)
--- import           Control.Arrow                     ((&&&))
+import           Control.Monad                     (liftM2)
 import           System.Exit
--- import           System.IO
 import           XMonad
 import           XMonad.Actions.CopyWindow
--- import           XMonad.Actions.CycleRecentWS
 import           XMonad.Actions.CycleShiftRecentWS
 import           XMonad.Actions.FindEmptyWorkspace
 import qualified XMonad.Actions.FlexibleResize     as Flex
 import           XMonad.Actions.FloatSnap
 import           XMonad.Actions.GroupNavigation
 import           XMonad.Actions.Plane
--- import           XMonad.Actions.SimpleDate
--- import           XMonad.Actions.WindowGo
--- import           XMonad.Hooks.DynamicBars          as Bars
 import           XMonad.Hooks.StatusBar
 import           XMonad.Hooks.StatusBar.PP
--- import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.EwmhDesktops         hiding (fullscreenEventHook)
--- import qualified XMonad.Hooks.EwmhDesktops         as E
 import           XMonad.Hooks.ManageDocks
--- import           XMonad.Hooks.ManageHelpers
 import           XMonad.Hooks.SetWMName
 import           XMonad.Hooks.UrgencyHook
 import           XMonad.Layout.CircleEx (CircleEx (cDelta), circleEx, circle)
 import           XMonad.Layout.Fullscreen
 import           XMonad.Layout.Grid
--- import           XMonad.Layout.IM
 import           XMonad.Layout.LayoutHints
 import           XMonad.Layout.NoBorders
--- import           XMonad.Layout.PerWorkspace        (onWorkspace)
 import           XMonad.Layout.ResizableTile
 import           XMonad.Layout.Tabbed
-import           XMonad.Layout.ThreeColumns
--- import           XMonad.Util.EZConfig
--- import           XMonad.Util.Run
 import           XMonad.Util.SpawnOnce
 import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.Loggers.NamedScratchpad
@@ -62,15 +50,11 @@ import           XMonad.Util.Cursor
 import           XMonad.Util.Hacks
 import           XMonad.Util.EZConfig
 import qualified Data.Map                          as M
--- import qualified Data.List                         as L
--- import           Data.Ratio                        ((%))
 import           Data.Char                      (toUpper)
--- import           Graphics.X11.ExtraTypes.XF86
 import qualified XMonad.StackSet                   as W
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat, transience')
 import XMonad.StackSet (allWindows)
 import XMonad.Prelude (filterM)
--- import           XMonad.ManageHook
 
 {-
   Xmonad configuration variables. These settings control some of the
@@ -87,13 +71,10 @@ myNormalBorderColor  = "#cccccc"      -- color of inactive border
 myBorderWidth       :: Dimension
 myBorderWidth        = 1              -- width of border around windows
 
-myTerm, myTerminal, myBrowser, myIMRosterTitle :: String
+myTerm, myTerminal, myBrowser :: String
 myTerm           = "kitty"   -- which terminal software to use
 myTerminal           = myTerm <> " --single-instance"   -- which terminal software to use
 myBrowser            = "firefox"
-myIMRosterTitle      = "Buddy List"   -- title of roster on IM workspace
-                                      -- use "Buddy List" for Pidgin, but
-                                      -- "Contact List" for Empathy
 
 myScreenshot,  mySelectScreenshot :: String
 myScreenshot         = "screenshot"
@@ -157,7 +138,7 @@ myFileSearch         = "fsearch"
 myStartupHook :: X ()
 myStartupHook    = do
       setWMName "LG3D"
-      windows $ W.greedyView startupWorkspace
+      -- windows $ W.greedyView startupWorkspace
       -- Bars.dynStatusBarStartup barCreator barDestoyer
       -- spawn "~/.xmonad/startup-hook"
 
@@ -170,7 +151,7 @@ myStartupHook    = do
       spawnOnce "/usr/lib/x86_64-linux-gnu/indicator-session/indicator-session-service"
       -- spawnOnce "/usr/libexec/gsd-xsettings"
       spawnOnce "xfsettingsd"
-
+      spawn     "export GTK_THEME=Yaru-dark"
       -- Keyring
       spawnOnce "gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh"
       spawnOnce "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
@@ -182,27 +163,21 @@ myStartupHook    = do
       spawnOnce "variety"
       spawnOnce "xfce4-power-manager"
       spawnOnce "/usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd"
-      spawnOnce "indicator-kdeconnect"
       spawnOnce "indicator-cpufreq"
       spawnOnce "indicator-multiload"
       spawnOnce "udiskie -q -s -f nemo &"
       spawnOnce "eval \"$(fasd --init auto)\""
-      -- spawnOnce "systemctl restart --user pipewire.service"
-      -- spawnOnce "systemctl restart --user wireplumber.service"
       spawnOnce "pulseaudio --start"
       spawnOnce "pasystray"
       spawnOnce "my-player-set"
       spawnOnce "sleep 5; pactl load-module module-bluetooth-discover"
       spawnOnce "blueman-applet"
       spawnOnce "psensor"
-      spawnOnce "kdeconnect-indicator"
       spawnOnce "mate-optimus-applet"
-      -- spawnOnce "cadence --minimized"
-      -- spawnOnce "ulauncher"
       spawnOnce "nemo-desktop"
-      -- spawnOnce $ myTerminal <> " tmux attach"
       spawnOnce myBrowser
       spawnOnce "flatpak run com.rtosta.zapzap"
+      spawnOnce "/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=com.gitlab.bitseater.meteo com.gitlab.bitseater.meteo"
 
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
@@ -235,8 +210,8 @@ myWorkspaces =
     "0:VM",    "-:Ext1", "=:Ext2"
   ]
 
-startupWorkspace :: String
-startupWorkspace = "5:Dev"  -- which workspace do you want to be on after launch?
+-- startupWorkspace :: String
+-- startupWorkspace = "5:Dev"  -- which workspace do you want to be on after launch?
 
 -- NamedScratchpad Utilities
 scratchpads :: NamedScratchpads
@@ -338,7 +313,7 @@ tabConfig = def {
 -- master area, and then use this ThreeColMid layout to make the panels
 -- tile to the left and right of the image. If you use GIMP 2.8, you
 -- can use single-window mode and avoid this issue.
-gimpLayout = smartBorders (avoidStruts (ThreeColMid 1 (3/100) (3/4)))
+-- gimpLayout = smartBorders (avoidStruts (ThreeColMid 1 (3/100) (3/4)))
 
 -- Here we combine our default layouts with our specific, workspace-locked
 -- layouts.
@@ -789,13 +764,13 @@ colorCopies = copiesPP $ xmobarColor myCopiedWSColor myAltBackGroundWSColor . cl
 myPP :: PP
 myPP =  filterOutWsPP [scratchpadWorkspaceTag] $ xmobarPP {
     ppTitle = xmobarColor myTitleColor myBackGroundWSColor . clickAndShortenTitle myTitleLength . escapeBackTicks,
-          -- ppCurrent = xmobarColor myAltCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
-          ppCurrent = xmobarColor myCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
-          ppVisible = xmobarColor myVisibleWSColor myBackGroundWSColor . wrap myVisibleWSLeft myVisibleWSRight . clickable,
-          ppUrgent = xmobarColor myUrgentWSColor myBackGroundWSColor . wrap myUrgentWSLeft myUrgentWSRight . clickable,
-          ppHidden = clickable,
-          ppExtras = [nspActive' scratchpads showActive showInactive]
-          }
+    -- ppCurrent = xmobarColor myAltCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
+    ppCurrent = xmobarColor myCurrentWSColor myBackGroundWSColor . wrap myCurrentWSLeft myCurrentWSRight . clickable,
+    ppVisible = xmobarColor myVisibleWSColor myBackGroundWSColor . wrap myVisibleWSLeft myVisibleWSRight . clickable,
+    ppUrgent = xmobarColor myUrgentWSColor myBackGroundWSColor . wrap myUrgentWSLeft myUrgentWSRight . clickable,
+    ppHidden = clickable,
+    ppExtras = [nspActive' scratchpads showActive showInactive]
+    }
       where
         showActive = xmobarColor myCurrentWSColor myBackGroundWSColor . first
         showInactive = xmobarColor myVisibleWSColor myBackGroundWSColor . first
